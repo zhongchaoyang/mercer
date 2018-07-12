@@ -45,18 +45,18 @@
             </div>
             <div class="collapse navbar-collapse" id="navbar">
                 <ul class="nav navbar-nav">
-                    <li>
+                    <li class="active">
                         <a href={% url "index" %}>首页</a>
                     </li>
                     <li>
                         <a href={% url "staff" %}>人员管理</a>
                     </li>
 
-                    <li class="active">
+                    <li>
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                            aria-expanded="false">计划管理<span class="caret"></span></a>
                         <ul class="dropdown-menu" aria-labelledby="about-us">
-                            <li class="active"><a href={% url "plan" %}>计划信息</a></li>
+                            <li><a href={% url "plan" %}>计划信息</a></li>
                             <li><a href={% url "planlist" %}>授予记录</a></li>
                             <li><a href={% url "attlist" %}>归属记录</a></li>
                         </ul>
@@ -83,129 +83,105 @@
 
 
     <div class="col-md-8">
+        <div class="panel panel-default">
+            <h3 style="display: table;margin-left: auto;margin-right: auto">添加计划</h3>
+            <form class="form-horizontal" role="form">
+                <div class="form-group">
+                    <label for="uname" class="col-sm-2 control-label">计划名称</label>
+                    <div class="col-sm-7">
+                        <input type="text" id="uname" name="uname"
+                               class="form-control well"
+                               placeholder="请输入计划名称"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="upwd" class="col-sm-2 control-label">人数</label>
+                    <div class="col-sm-7">
+                        <input type="number" id="upwd" name="upwd"
+                               class="form-control well"
+                               placeholder="请输入人数"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="uname" class="col-sm-2 control-label">授予日期</label>
+                    <div class="col-sm-7">
+                        <div class="input-group date form_datetime col-sm-7"
+                             data-date="2018-07-10"
+                             data-date-format="yyyy-MM-dd"
+                             data-link-field="dtp_input1">
+                            <input class="form-control well" size="16" placeholder="请选择入职时间"
+                                   type="text" value=""
+                                   readonly>
+                            <span class="input-group-addon"><span
+                                    class="glyphicon glyphicon-th"></span></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="uname" class="col-sm-2 control-label">工具</label>
+                    <div class="col-sm-3">
+                        <input type="text" id="uname" name="uname"
+                               class="form-control well"
+                               placeholder="请输入计划所使用的工具"/>
+                    </div>
+                    <label for="upwd" class="col-sm-1 control-label">等待期</label>
+                    <div class="col-sm-3">
+                        <input type="number" id="upwd" name="upwd"
+                               class="form-control well"
+                               placeholder="请输入该计划的等待期（月数）"/>
+                    </div>
+                </div>
 
-        <div class="panel panel-default" style="margin-top: 20px">
-            <div class="panel-body" style="display: table;margin-left: auto;margin-right: auto">
-                <table class="sortable-theme-bootstrap table-bordered" data-sortable>
-                    <thead>
-                    <tr>
-                        <th>
-                            计划名称
-                        </th>
-                        <th data-sortable="false">
-                            实施日期
-                        </th>
-                        <th data-sortable="false">
-                            有效期
-                        </th>
-                        <th data-sortable="false">
-                            最大授予总量
-                        </th>
-                        <th>
-                            实际已授予总量
-                        </th>
-                        <th>
-                            剩余总量
-                        </th>
-                        <th>
-                            实际已授予期权
-                        </th>
-                        <th>
-                            剩余期权
-                        </th>
-                        <th data-sortable="false">
-                            RSU总量
-                        </th>
-                        <th>
-                            实际已授予RSU
-                        </th>
-                        <th>
-                            剩余RSU
-                        </th>
-                        <th>
-                            已覆盖人数
-                        </th>
-                        <th>
-                            已覆盖人次
-                        </th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td>
-                            1
-                        </td>
-                        <td>
-                            TB - Monthly
-                        </td>
-                        <td>
-                            01/04/2012
-                        </td>
-                        <td>
-                            Default
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            1
-                        </td>
-                        <td>
-                            TB - Monthly
-                        </td>
-                        <td>
-                            01/04/2012
-                        </td>
-                        <td>
-                            Approved
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            2
-                        </td>
-                        <td>
-                            TB - Monthly3
-                        </td>
-                        <td>
-                            02/04/2012
-                        </td>
-                        <td>
-                            Declined
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            3
-                        </td>
-                        <td>
-                            TB - Monthly2
-                        </td>
-                        <td>
-                            03/04/2012
-                        </td>
-                        <td>
-                            Pending
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            4
-                        </td>
-                        <td>
-                            TB - Monthly1
-                        </td>
-                        <td>
-                            04/04/2012
-                        </td>
-                        <td>
-                            Call in to confirm
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+                <div class="form-group">
+                    <label for="upwd" class="col-sm-2 control-label">归属详细</label>
+                    <div class="col-sm-7">
+                        <!--动态增加的内容都添加在id="formpart"的div后面-->
+                        <div id="formpart"></div>
+                        <a class="btn btn-default" id="addform">添加归属信息</a>
+                    </div>
+                </div>
 
 
-            </div>
+                <div class="form-group">
+                    <label for="uname" class="col-sm-2 control-label">归属日期方式</label>
+                    <div class="col-sm-7">
+                        <select class="selectpicker" title="请选择归属日期方式">
+                            <option>月</option>
+                            <option>季</option>
+                            <option>年</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">选择员工</label>
+                    <div class="col-sm-3">
+                        <select class="selectpicker" data-size="5" multiple data-live-search="true"
+                                data-live-search-placeholder="搜索"
+                                data-actions-box="true"
+                                data-selected-text-format="count > 3">　
+                            <optgroup label="filter1">　　　　
+                                <option>1</option>　　　　
+                                <option>2</option>
+                                <option>3</option>　　　
+                                <option>4</option>
+                                <option>5</option>
+                                <option>6</option>　　
+                            </optgroup>
+                        </select>
+                    </div>
+                    <label for="upwd" class="col-sm-1 control-label">授予量</label>
+                    <div class="col-sm-3">
+                        <input type="number" id="upwd" name="upwd"
+                               class="form-control well"
+                               placeholder="请输入授予给员工的总量"/>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-default"
+                        style="display: table;margin-left: auto;margin-right: auto;margin-bottom: 10px">确认添加
+                </button>
+            </form>
+
         </div>
 
 
@@ -306,7 +282,44 @@
         minView: 'month',
         todayHighlight: true
     });
+</script>
+<script type="text/javascript">
+    $("#datetimeStart").datetimepicker({
+        format: 'yyyy-mm-dd',
+        minView: 'month',
+        language: 'zh-CN',
+        autoclose: true,
+        startDate: new Date()
+    }).on("click", function () {
+        $("#datetimeStart").datetimepicker("setEndDate", $("#datetimeEnd").val())
+    });
+    $("#datetimeEnd").datetimepicker({
+        format: 'yyyy-mm-dd',
+        minView: 'month',
+        language: 'zh-CN',
+        autoclose: true,
+        startDate: new Date()
+    }).on("click", function () {
+        $("#datetimeEnd").datetimepicker("setStartDate", $("#datetimeStart".val()))
+    });
+</script>
+<script>
+    $("#addform").click(function () {
+        //添加的内容
+        var addform = '<div class="form-group">' +
+            '<div class="col-sm-3"><input size="16" type="date" ' +
+            ' class="form-control" ></div>' +
+            '<label class="col-sm-1 control-label">至</label><div class="col-sm-3"><input size="16" type="date" ' +
+            ' class="form-control" ></div>' +
+            '<div class="col-sm-4"><input type="text" id="upwd" name="upwd" class="form-control" placeholder="请输入该计划归属的比例"/></div></div>';
 
+
+        $("#formpart").after($(addform));
+        //删除表单
+        $("#removeform").click(function () {
+            $("#addformbody").remove();
+        });
+    });
 </script>
 
 <!-- IE10 viewport bug workaround -->

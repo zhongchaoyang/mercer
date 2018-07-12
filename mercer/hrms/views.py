@@ -6,6 +6,7 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect, render_to_response, get_object_or_404
 # 导入Paginator,EmptyPage和PageNotAnInteger模块
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.template.context_processors import csrf
 from .forms import *
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -13,24 +14,52 @@ from .models import NewUser
 from django.core.exceptions import ObjectDoesNotExist
 from django.views.decorators.cache import cache_page
 from .models import *
+from django.views.decorators.csrf import csrf_protect
 from django.http import HttpResponse
 from pyecharts import Bar, Line, Pie
 import time
 # Create your views here.
 def index(request):
-    return render(request, 'index3.html')
+    return render(request, 'index.html')
 
 
-def StaffManage(request):
-    return render(request, 'StaffManage.html')
+@login_required
+@csrf_protect
+def StaffManage(request, page=1):
+    loginform = LoginForm()
+    stafflist = Employee.objects.order_by('id').all()
+    per_page_count = 10  # 每页显示的个数
+    endpage = stafflist.count() / per_page_count + 1
+    paginator = Paginator(stafflist, per_page_count)  # 分页
+    try:
+        stafflist = paginator.page(int(page))
+    except PageNotAnInteger:
+        stafflist = paginator.page(1)
+    except EmptyPage:
+        stafflist = paginator.page(paginator.num_pages)
+    c = csrf(request)
+    c.update({'staffs': stafflist, 'loginform': loginform, 'endpage': endpage})
+    return render_to_response('StaffManage.html',context=c)
 
 
 def PlanManage(request):
     return render(request, 'PlanManage.html')
 
 
+def PlanList(request):
+    return render(request, 'PlanList.html')
+
+
+def AttributionList(request):
+    return render(request, 'AttributionList.html')
+
+
 def CompanyIndex(request):
     return render(request, 'CompanyIndex.html')
+
+
+def AddPlan(request):
+    return render(request, 'AddPlan.html')
 
 
 def log_in(request):
