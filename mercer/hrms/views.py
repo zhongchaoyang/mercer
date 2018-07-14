@@ -22,18 +22,12 @@ import time
 def index(request):
     return render(request, 'index.html')
 
-
-@login_required
-@csrf_protect
 def StaffManage(request, page=1):
-    if request.method == 'POST':
-        form = EmployeeForm(request.POST)
-        if form.is_valid():
-            enumber = form.cleaned_data['enumber']
-            ename = form.cleaned_data['ename']
-            Employee.objects.create(number=enumber, name=ename)
     loginform = LoginForm()
-    stafflist = Employee.objects.order_by('id').all()
+    username = request.user.username #获取当前登录的用户名
+    department_list = Department.objects.filter(c_id=username)
+    rank_list = Rank.objects.filter(c_id=username)
+    stafflist = Employee.objects.order_by('number').all()
     per_page_count = 10  # 每页显示的个数
     endpage = stafflist.count() / per_page_count + 1
     paginator = Paginator(stafflist, per_page_count)  # 分页
@@ -44,9 +38,26 @@ def StaffManage(request, page=1):
     except EmptyPage:
         stafflist = paginator.page(paginator.num_pages)
     c = csrf(request)
-    c.update({'staffs': stafflist, 'loginform': loginform, 'endpage': endpage})
-    return render_to_response('StaffManage.html',context=c)
+    yishouyu = '1'
+    yiguishu = '2'
+    weiguishu = '0'
+    c.update({'staffs': stafflist, 'loginform': loginform, 'endpage': endpage,
+              'department_list':department_list,'rank_list':rank_list,
+              'yishouyu':yishouyu, 'yiguishu':yiguishu, 'weiguishu':weiguishu})
+    return render(request, 'StaffManage.html',context=c)
 
+
+def AddEmployee(request):
+    request.encoding = 'utf-8'
+    if request.method == 'POST':
+        eindex = request.POST
+        enumber = eindex.get('enumber')
+        ename = eindex.get('ename')
+        department = eindex.get('department')
+        rank = eindex.get('rank')
+        join_date = eindex.get('join_date')
+        Employee.objects.create(number=enumber, name=ename, department=department,rank=rank, join_date=join_date)
+    return redirect('/hrms/staff')
 
 def PlanManage(request):
     return render(request, 'PlanManage.html')

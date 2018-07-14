@@ -28,9 +28,9 @@ class EmployeeForm(forms.Form):
         widget=forms.TextInput(attrs={'class': 'form-control', 'id': 'enumber', 'placeholder': 'number'}))
     ename = forms.CharField(
         widget=forms.TextInput(attrs={'class': 'form-control', 'id': 'ename', 'placeholder': 'name'}))
-    edepartment = forms.CharField(
-        widget=forms.TextInput(attrs={'class': 'form-control', 'id': 'edepartment', 'placeholder': 'department'}))
-    erank = forms.CharField(
-        widget=forms.TextInput(attrs={'class': 'form-control', 'id': 'erank', 'placeholder': 'rank'}))
-    ejoin_date = forms.CharField(
-        widget=forms.TextInput(attrs={'class': 'form-control', 'id': 'ejoin_date', 'placeholder': 'join_date'}))
+    # edepartment = forms.CharField(
+    #     widget=forms.TextInput(attrs={'class': 'form-control', 'id': 'department', 'placeholder': 'epartment'}))
+    #erank = forms.MultipleChoiceField(
+        #widget=forms.TextInput(attrs={'class': 'form-control', 'id': 'rank', 'placeholder': 'rank'}))
+    # ejoin_date = forms.CharField(
+    #     widget=forms.TextInput(attrs={'class': 'form-control', 'id': 'join_date', 'placeholder': 'join_date'}))

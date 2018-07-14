@@ -10,6 +10,8 @@ urlpatterns = [
     url(r'^register/$', views.register, name='register'),
 
     url(r'^staff/$', views.StaffManage, name='staff'),
+    url(r'^staff/adde$', views.AddEmployee, name='adde'),
+
     url(r'^staff/(\d+)/$', views.StaffManage),
     url(r'^plan/$', views.PlanManage, name='plan'),
     url(r'^planlist/$', views.PlanList, name='planlist'),
