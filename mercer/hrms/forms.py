@@ -22,3 +22,15 @@ class RegisterForm(forms.Form):
         widget=forms.TextInput(attrs={'class': 'form-control', 'id': 'cname', 'placeholder': 'Cname'}))
     cad = forms.CharField(
         widget=forms.TextInput(attrs={'class': 'form-control', 'id': 'cad', 'placeholder': 'Caddress'}))
+
+class EmployeeForm(forms.Form):
+    enumber = forms.CharField(
+        widget=forms.TextInput(attrs={'class': 'form-control', 'id': 'enumber', 'placeholder': 'number'}))
+    ename = forms.CharField(
+        widget=forms.TextInput(attrs={'class': 'form-control', 'id': 'ename', 'placeholder': 'name'}))
+    edepartment = forms.CharField(
+        widget=forms.TextInput(attrs={'class': 'form-control', 'id': 'edepartment', 'placeholder': 'department'}))
+    erank = forms.CharField(
+        widget=forms.TextInput(attrs={'class': 'form-control', 'id': 'erank', 'placeholder': 'rank'}))
+    ejoin_date = forms.CharField(
+        widget=forms.TextInput(attrs={'class': 'form-control', 'id': 'ejoin_date', 'placeholder': 'join_date'}))

@@ -26,6 +26,12 @@ def index(request):
 @login_required
 @csrf_protect
 def StaffManage(request, page=1):
+    if request.method == 'POST':
+        form = EmployeeForm(request.POST)
+        if form.is_valid():
+            enumber = form.cleaned_data['enumber']
+            ename = form.cleaned_data['ename']
+            Employee.objects.create(number=enumber, name=ename)
     loginform = LoginForm()
     stafflist = Employee.objects.order_by('id').all()
     per_page_count = 10  # 每页显示的个数
