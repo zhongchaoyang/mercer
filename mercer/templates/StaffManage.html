@@ -193,7 +193,7 @@
                 <button class="btn btn-default" style="margin-top: 5px" data-toggle="modal" data-target="#myModal2">
                     删除员工
                 </button>
-                <form method="post" action="#" class="form-horizontal" role="form" id="myForm"
+                <form method="post" action="/hrms/staff/dele" class="form-horizontal" role="form" id="myForm"
                       onsubmit="return ">{% csrf_token %}
                     <div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
                          aria-hidden="true">
@@ -215,26 +215,17 @@
                                                 <div class="form-group">
                                                     <label class="col-sm-4 control-label">请选择要删除的员工</label>
                                                     <div class="col-sm-5">
-                                                        <select class="selectpicker" data-size="5" multiple
-                                                                data-live-search="true"
+                                                        <select class="selectpicker" data-size="20" multiple
+                                                                data-live-search="true" id="staff2del" name="staff2del"
                                                                 data-live-search-placeholder="搜索"
                                                                 data-actions-box="true"
                                                                 data-selected-text-format="count > 3">　
                                                             <optgroup label="filter1">　　　　
-                                                                <option>1</option>
-                                                                　　　　
-                                                                <option>2</option>
-                                                                　　　
-                                                                <option>3</option>
-                                                                　　　
-                                                                <option>4</option>
-                                                                <option>5</option>
-                                                                <option>6</option>
-                                                                　　
-                                                            </optgroup>
-                                                            　　
+                                                            {% for sample in staffs %}
+                                                                <option>{{ sample.number }}:{{ sample.name }}</option>
+                                                            {% endfor %}　　
+                                                            </optgroup>　
                                                         </select>
-
                                                     </div>
                                                 </div>
                                             </form>
@@ -292,7 +283,9 @@
                         <tbody>
                         {% for sample in staffs %}
                             <tr>
-                                <td>{{ sample.number }}</td>
+                                <td>
+                                    <a href={% url "eIndex" eid=sample.number %}>{{ sample.number }}</a>
+{#                                    {{ sample.number }}</td>#}
                                 <td>{{ sample.name }}</td>
                                 <td>{{ sample.department }}</td>
                                 <td>{{ sample.rank }}</td>
@@ -310,17 +303,17 @@
                     <div style="padding-right:10px">
                             <span style="float: right">
                                  <a href="/hrms/staff/1"> 第一页 |  &nbsp;</a>
-                                {% if samples.has_previous %}
-                                    <a href="/website/samplesList/{{ samples.previous_page_number }}"> 上一页 &nbsp;</a>
+                                {% if staffs.has_previous %}
+                                    <a href="/hrms/staff/{{ staffs.previous_page_number }}"> 上一页 &nbsp;</a>
                                 {% else %}
                                     {# 当前页的不存在上一页时,上一页的按钮不可用#}
                                     <a href="#"> 上一页 &nbsp;</a>
-                                    {% if  samples.has_next %}
+                                    {% if  staffs.has_next %}
                                         <span> | </span>
                                     {% endif %}
                                 {% endif %}
-                                {% if samples.has_next %}
-                                    <a href="/hrms/staff/{{ samples.next_page_number }}"> 下一页 &nbsp;</a>
+                                {% if staffs.has_next %}
+                                    <a href="/hrms/staff/{{ staffs.next_page_number }}"> 下一页 &nbsp;</a>
                                 {% else %}
                                     <a href="#"> 下一页 &nbsp;</a>
                                 {% endif %}

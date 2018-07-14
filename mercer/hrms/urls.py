@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.conf.urls import include,url
 from hrms import views
 
@@ -10,8 +11,9 @@ urlpatterns = [
     url(r'^register/$', views.register, name='register'),
 
     url(r'^staff/$', views.StaffManage, name='staff'),
-    url(r'^staff/adde$', views.AddEmployee, name='adde'),
-
+    url(r'^staff/adde$', views.AddEmployee, name='adde'),#添加员工
+    url(r'^staff/dele$', views.DeleteEmployee, name='dele'),  # 删除员工
+    url(r'^staff/(?P<eid>(.*?))/$', views.EmployeeIndex, name='eIndex'),#查询具体员工信息
     url(r'^staff/(\d+)/$', views.StaffManage),
     url(r'^plan/$', views.PlanManage, name='plan'),
     url(r'^planlist/$', views.PlanList, name='planlist'),
