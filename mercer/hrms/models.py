@@ -18,6 +18,20 @@ class NewUser(AbstractUser):  #企业表
         return self.username
 
 
+class Department(models.Model):#部门表
+    c_id = models.CharField('c_id', default='',max_length=256)
+    name = models.CharField('name', default='',max_length=256)
+    def __str__(self):
+        return self.name.encode('utf-8')
+
+
+class Rank(models.Model):#职级表
+    c_id = models.CharField('c_id', default='',max_length=256)
+    name = models.CharField('name', default='',max_length=256)
+    def __str__(self):
+        return self.name.encode('utf-8')
+
+
 class Employee(models.Model):   #员工表
     number = models.CharField('number', default='', max_length=256) #工号
     name = models.CharField('name', default='', max_length=256) #员工姓名

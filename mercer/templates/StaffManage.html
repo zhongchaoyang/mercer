@@ -100,7 +100,7 @@
             </div>
             <div class="col-md-2">
                 <button class="btn btn-default" data-toggle="modal" data-target="#myModal1">添加员工</button>
-                <form method="post" action="#" class="form-horizontal" role="form" id="myForm"
+                <form method="post" action="/hrms/staff/adde" class="form-horizontal" role="form" id="myForm"
                       onsubmit="return ">{% csrf_token %}
                     <div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
                          aria-hidden="true">
@@ -136,38 +136,36 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="uname" class="col-sm-2 control-label">部门</label>
+                                                    <label for="department" class="col-sm-2 control-label">部门</label>
                                                     <div class="col-sm-7">
-                                                        <select class="selectpicker" title="请选择部门">
-                                                            <option>1</option>
-                                                            <option>2</option>
-                                                            <option>3</option>
-                                                            <option>4</option>
-                                                            <option>5</option>
+                                                        <select class="selectpicker" title="请选择部门" id="department"
+                                                                name="department">
+                                                            {% for sample in department_list %}
+                                                                <option>{{ sample.name }}</option>
+                                                            {% endfor %}
                                                         </select>
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="uname" class="col-sm-2 control-label">职级</label>
+                                                    <label for="rank" class="col-sm-2 control-label">职级</label>
                                                     <div class="col-sm-7">
-                                                        <select class="selectpicker" title="请选择职级">
-                                                            <option>1</option>
-                                                            <option>2</option>
-                                                            <option>3</option>
-                                                            <option>4</option>
-                                                            <option>5</option>
+                                                        <select class="selectpicker" title="请选择职级" id="rank"
+                                                                name="rank">
+                                                            {% for sample in rank_list %}
+                                                                <option>{{ sample.name }}</option>
+                                                            {% endfor %}
                                                         </select>
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="uname" class="col-sm-2 control-label">入职时间</label>
+                                                    <label for="join_date" class="col-sm-2 control-label">入职时间</label>
                                                     <div class="col-sm-7">
                                                         <div class="input-group date form_datetime col-sm-7"
                                                              data-date="2018-07-10"
                                                              data-date-format="yyyy-MM-dd"
                                                              data-link-field="dtp_input1">
                                                             <input class="form-control" size="16" placeholder="请选择入职时间"
-                                                                   type="text" value=""
+                                                                   type="text" value="" id="join_date" name="join_date"
                                                                    readonly>
 
                                                             <span class="input-group-addon"><span
@@ -195,7 +193,7 @@
                 <button class="btn btn-default" style="margin-top: 5px" data-toggle="modal" data-target="#myModal2">
                     删除员工
                 </button>
-                <form method="post" action="#" class="form-horizontal" role="form" id="myForm"
+                <form method="post" action="/hrms/staff/dele" class="form-horizontal" role="form" id="myForm"
                       onsubmit="return ">{% csrf_token %}
                     <div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
                          aria-hidden="true">
@@ -217,26 +215,17 @@
                                                 <div class="form-group">
                                                     <label class="col-sm-4 control-label">请选择要删除的员工</label>
                                                     <div class="col-sm-5">
-                                                        <select class="selectpicker" data-size="5" multiple
-                                                                data-live-search="true"
+                                                        <select class="selectpicker" data-size="20" multiple
+                                                                data-live-search="true" id="staff2del" name="staff2del"
                                                                 data-live-search-placeholder="搜索"
                                                                 data-actions-box="true"
                                                                 data-selected-text-format="count > 3">　
                                                             <optgroup label="filter1">　　　　
-                                                                <option>1</option>
-                                                                　　　　
-                                                                <option>2</option>
-                                                                　　　
-                                                                <option>3</option>
-                                                                　　　
-                                                                <option>4</option>
-                                                                <option>5</option>
-                                                                <option>6</option>
-                                                                　　
-                                                            </optgroup>
-                                                            　　
+                                                            {% for sample in staffs %}
+                                                                <option>{{ sample.number }}:{{ sample.name }}</option>
+                                                            {% endfor %}　　
+                                                            </optgroup>　
                                                         </select>
-
                                                     </div>
                                                 </div>
                                             </form>
@@ -294,14 +283,16 @@
                         <tbody>
                         {% for sample in staffs %}
                             <tr>
-                                <td>{{ sample.number }}</td>
+                                <td>
+                                    <a href={% url "eIndex" eid=sample.number %}>{{ sample.number }}</a>
+{#                                    {{ sample.number }}</td>#}
                                 <td>{{ sample.name }}</td>
                                 <td>{{ sample.department }}</td>
                                 <td>{{ sample.rank }}</td>
                                 <td>{{ sample.join_date }}</td>
-                                <td>已授予</td>
-                                <td>已归属</td>
-                                <td>未归属</td>
+                                <td>{{ yishouyu }}</td>
+                                <td>{{ yiguishu }}</td>
+                                <td>{{ weiguishu }}</td>
                                 <td>{{ sample.leave_date }}</td>
                             </tr>
                         {% endfor %}
@@ -312,17 +303,17 @@
                     <div style="padding-right:10px">
                             <span style="float: right">
                                  <a href="/hrms/staff/1"> 第一页 |  &nbsp;</a>
-                                {% if samples.has_previous %}
-                                    <a href="/website/samplesList/{{ samples.previous_page_number }}"> 上一页 &nbsp;</a>
+                                {% if staffs.has_previous %}
+                                    <a href="/hrms/staff/{{ staffs.previous_page_number }}"> 上一页 &nbsp;</a>
                                 {% else %}
                                     {# 当前页的不存在上一页时,上一页的按钮不可用#}
                                     <a href="#"> 上一页 &nbsp;</a>
-                                    {% if  samples.has_next %}
+                                    {% if  staffs.has_next %}
                                         <span> | </span>
                                     {% endif %}
                                 {% endif %}
-                                {% if samples.has_next %}
-                                    <a href="/hrms/staff/{{ samples.next_page_number }}"> 下一页 &nbsp;</a>
+                                {% if staffs.has_next %}
+                                    <a href="/hrms/staff/{{ staffs.next_page_number }}"> 下一页 &nbsp;</a>
                                 {% else %}
                                     <a href="#"> 下一页 &nbsp;</a>
                                 {% endif %}
@@ -391,12 +382,17 @@
                 <div class="row">
                     <div>
                         <button class="btn btn-default" style="display: table;margin-left: auto;margin-right: auto">
-                            基本信息
+                            计划信息
                         </button>
                     </div>
                     <div>
                         <button class="btn btn-default"
-                                style="display: table;margin-left: auto;margin-right: auto;margin-top: 40px">激励详情
+                                style="display: table;margin-left: auto;margin-right: auto;margin-top: 40px">授予记录
+                        </button>
+                    </div>
+                    <div>
+                        <button class="btn btn-default"
+                                style="display: table;margin-left: auto;margin-right: auto;margin-top: 40px">归属记录
                         </button>
                     </div>
                 </div>
