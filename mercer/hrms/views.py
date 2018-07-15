@@ -117,12 +117,40 @@ def PlanManage(request, page=1):#计划管理页面主页
     return render(request, 'PlanManage.html', context=c)
 
 
-def PlanList(request):
-    return render(request, 'PlanList.html')
+def PlanList(request, page=1): #授予记录页面
+    loginform = LoginForm()
+    username = request.user.username  # 获取当前登录的用户名
+    planlist = Plan.objects.order_by('id').all()
+    per_page_count = 5  # 每页显示的个数
+    endpage = planlist.count() / per_page_count + 1
+    paginator = Paginator(planlist, per_page_count)  # 分页
+    try:
+        planlist = paginator.page(int(page))
+    except PageNotAnInteger:
+        planlist = paginator.page(1)
+    except EmptyPage:
+        planlist = paginator.page(paginator.num_pages)
+    c = csrf(request)
+    c.update({'planlist': planlist, 'loginform': loginform, 'endpage': endpage,})
+    return render(request, 'PlanList.html', context=c)
 
 
-def AttributionList(request):
-    return render(request, 'AttributionList.html')
+def AttributionList(request, page=1):
+    loginform = LoginForm()
+    username = request.user.username  # 获取当前登录的用户名
+    planlist = Plan.objects.order_by('id').all()
+    per_page_count = 5  # 每页显示的个数
+    endpage = planlist.count() / per_page_count + 1
+    paginator = Paginator(planlist, per_page_count)  # 分页
+    try:
+        planlist = paginator.page(int(page))
+    except PageNotAnInteger:
+        planlist = paginator.page(1)
+    except EmptyPage:
+        planlist = paginator.page(paginator.num_pages)
+    c = csrf(request)
+    c.update({'planlist': planlist, 'loginform': loginform, 'endpage': endpage,})
+    return render(request, 'AttributionList.html', context=c)
 
 
 def CompanyIndex(request,page=1):
