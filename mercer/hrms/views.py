@@ -76,9 +76,26 @@ def DeleteEmployee(request):
 def EmployeeIndex(request, eid):  # 查看单个员工页面
     loginform = LoginForm()
     employee = Employee.objects.get(number=eid)
+    username = request.user.username  # 获取当前登录的用户名
+    department_list = Department.objects.filter(c_id=username)
+    rank_list = Rank.objects.filter(c_id=username)
     c = csrf(request)
-    c.update({'employee': employee, 'loginform': loginform})
+    c.update({'employee': employee, 'loginform': loginform,
+              'department_list': department_list, 'rank_list': rank_list})
     return render(request, 'Employee.html', context=c)
+
+
+def EditEmployee(request, eid):
+    request.encoding = 'utf-8'
+    if request.method == 'POST':
+        eindex = request.POST
+        ename = eindex.get('ename')
+        department = eindex.get('department')
+        rank = eindex.get('rank')
+        join_date = eindex.get('join_date')
+        Employee.objects.filter(number= eid).update(name=ename,department = department, rank = rank,join_date = join_date)
+    hehe = '/hrms/staff/employee/'+eid
+    return redirect(hehe)
 
 
 def PlanManage(request):
