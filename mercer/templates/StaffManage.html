@@ -302,9 +302,9 @@
                     <!-- 分页 -->
                     <div style="padding-right:10px">
                             <span style="float: right">
-                                 <a href="/hrms/staff/1"> 第一页 |  &nbsp;</a>
+                                 <a href="/hrms/staff/page/1"> 第一页 |  &nbsp;</a>
                                 {% if staffs.has_previous %}
-                                    <a href="/hrms/staff/{{ staffs.previous_page_number }}"> 上一页 &nbsp;</a>
+                                    <a href="/hrms/staff/page/{{ staffs.previous_page_number }}"> 上一页 &nbsp;</a>
                                 {% else %}
                                     {# 当前页的不存在上一页时,上一页的按钮不可用#}
                                     <a href="#"> 上一页 &nbsp;</a>
@@ -313,11 +313,11 @@
                                     {% endif %}
                                 {% endif %}
                                 {% if staffs.has_next %}
-                                    <a href="/hrms/staff/{{ staffs.next_page_number }}"> 下一页 &nbsp;</a>
+                                    <a href="/hrms/staff/page/{{ staffs.next_page_number }}"> 下一页 &nbsp;</a>
                                 {% else %}
                                     <a href="#"> 下一页 &nbsp;</a>
                                 {% endif %}
-                                <a href="/hrms/staff/{{ endpage }}">| 末尾页 </a>
+                                <a href="/hrms/staff/page/{{ endpage }}">| 末尾页 </a>
                             </span>
                     </div>
 
