@@ -84,33 +84,29 @@
 
     <div class="col-md-8">
         <div class="panel panel-default">
-            <h3 style="display: table;margin-left: auto;margin-right: auto">添加计划</h3>
-            <form method="post" class="form-horizontal" role="form" action="/hrms/addplan/add">
-            {% csrf_token %}
+            <h3 style="display: table;margin-left: auto;margin-right: auto">新增授予</h3>
+            <form method="post" class="form-horizontal" role="form" action="/hrms/addplan/add"
+                  style="margin-top: 30px">
+                {% csrf_token %}
                 <div class="form-group">
-                    <label for="plan_name" class="col-sm-2 control-label">计划名称</label>
-                    <div class="col-sm-7">
-                        <input type="text" id="plan_name" name="plan_name"
-                               class="form-control well"
-                               placeholder="请输入计划名称"/>
+                    <label for="pname"
+                           class="col-sm-2 control-label">选择计划</label>
+                    <div class="col-sm-3">
+                        <select class="selectpicker" title="请选择计划"
+                                id="pname"
+                                name="pname">
+                            {% for sample in planlist %}
+                                <option>{{ sample.name }}</option>
+                            {% endfor %}
+                        </select>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label for="staff_count" class="col-sm-2 control-label">人数</label>
-                    <div class="col-sm-7">
-                        <input type="number" id="staff_count" name="staff_count"
-                               class="form-control well"
-                               placeholder="请输入人数"/>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="uname" class="col-sm-2 control-label">授予日期</label>
-                    <div class="col-sm-7">
-                        <div class="input-group date form_datetime col-sm-7"
+                    <label for="uname" class="col-sm-1 control-label">实施日期</label>
+                    <div class="col-sm-3">
+                        <div class="input-group date form_datetime"
                              data-date-format="yyyy-MM-dd"
                              data-link-field="dtp_input1">
-                            <input class="form-control well" size="16" placeholder="请选择授予时间"
-                                   type="text" id="g_time" name="g_time"
+                            <input class="form-control well" size="16" placeholder="请选择实施日期"
+                                   type="text" id="start_date" name="start_date"
                                    readonly>
                             <span class="input-group-addon"><span
                                     class="glyphicon glyphicon-th"></span></span>
@@ -120,31 +116,22 @@
                 <div class="form-group">
                     <label for="uname" class="col-sm-2 control-label">工具</label>
                     <div class="col-sm-3">
-                        <input type="text" id="tool" name="tool"
-                               class="form-control well"
-                               placeholder="请输入计划所使用的工具"/>
+                        <select class="selectpicker" title="请输入计划所使用的工具"
+                                id="tool" name="tool">
+                            <option>期权</option>
+                            <option>限制性股票</option>
+                        </select>
                     </div>
-                    <label for="upwd" class="col-sm-1 control-label">等待期</label>
+                    <label for="wait_time" class="col-sm-1 control-label">等待期</label>
                     <div class="col-sm-3">
-                        <input type="number" id="validity_time" name="validity_time"
+                        <input type="number" id="wait_time" name="wait_time"
                                class="form-control well"
                                placeholder="请输入该计划的等待期（月数）"/>
                     </div>
                 </div>
-
-                <div class="form-group">
-                    <label for="upwd" class="col-sm-2 control-label">归属详细</label>
-                    <div class="col-sm-7">
-                        <!--动态增加的内容都添加在id="formpart"的div后面-->
-                        <div id="formpart"></div>
-                        <a class="btn btn-default" id="addform">添加归属信息</a>
-                    </div>
-                </div>
-
-
                 <div class="form-group">
                     <label for="uname" class="col-sm-2 control-label">归属日期方式</label>
-                    <div class="col-sm-7">
+                    <div class="col-sm-3">
                         <select class="selectpicker" title="请选择归属日期方式"
                                 id="att_fangshi" name="att_fangshi">
                             <option>月</option>
@@ -152,6 +139,13 @@
                             <option>年</option>
                         </select>
                     </div>
+                    <label for="upwd" class="col-sm-1 control-label">授予量</label>
+                    <div class="col-sm-3">
+                        <input type="number" id="sum" name="sum"
+                               class="form-control well"
+                               placeholder="请输入按授予方式每次的数量"/>
+                    </div>
+
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">选择员工</label>
@@ -167,14 +161,21 @@
                             </optgroup>
                         </select>
                     </div>
-                    <label for="upwd" class="col-sm-1 control-label">授予量</label>
+                    <label for="upwd" class="col-sm-1 control-label">有效期</label>
                     <div class="col-sm-3">
-                        <input type="number" id="sum" name="sum"
+                        <input type="number" id="validity_time" name="validity_time"
                                class="form-control well"
-                               placeholder="请输入授予给员工的总量"/>
+                               placeholder="请输入有效期（单位按日期方式）"/>
                     </div>
                 </div>
-
+                <div class="form-group">
+                    <label for="upwd" class="col-sm-2 control-label">归属详细</label>
+                    <div class="col-sm-7">
+                        <!--动态增加的内容都添加在id="formpart"的div后面-->
+                        <div id="formpart"></div>
+                        <a class="btn btn-default" id="addform">添加归属日期</a>
+                    </div>
+                </div>
                 <button type="submit" class="btn btn-default"
                         style="display: table;margin-left: auto;margin-right: auto;margin-bottom: 10px">确认添加
                 </button>
@@ -305,14 +306,12 @@
     $("#addform").click(function () {
         //添加的内容
         var addform = '<div class="form-group">' +
-            '<div class="col-sm-3"><input size="16" type="date" id="date" name="date" ' +
+            '<div class="col-sm-4"><input size="16" type="date" id="date" name="date" ' +
             ' class="form-control" ></div>' +
-            '<label class="col-sm-1 control-label">至</label><div class="col-sm-3"><input size="16" type="date" ' +
-            ' class="form-control" ></div>' +
-            '<div class="col-sm-4"><input type="text" id="proportion" name="proportion" class="form-control" placeholder="请输入该计划归属的比例"/></div></div>';
+            '<label class="col-sm-2 control-label">比例:</label>' +
+            '<div class="col-sm-4"><input type="text" id="proportion" name="proportion" class="form-control" placeholder="输入分配系数，默认为1"/></div></div>';
 
-
-        $("#formpart").after($(addform));
+        $("#formpart").before($(addform));
         //删除表单
         $("#removeform").click(function () {
             $("#addformbody").remove();

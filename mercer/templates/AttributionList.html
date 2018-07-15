@@ -130,7 +130,7 @@
                                 <td>{{ sample.e_name }}</td>
                                 <td>{{ sample.plan_name }}</td>
                                 <td>{{ sample.date }}</td>
-                                <td>{{ sample.sum }}</td>
+                                <td>{{ sample.real_sum }}</td>
                                 <td>{{ sample.proportion }}</td>
                             </tr>
                         {% endfor %}
@@ -140,17 +140,17 @@
                     <div style="padding-right:10px">
                             <span style="float: right">
                                  <a href="/hrms/attlist/page/1"> 第一页 |  &nbsp;</a>
-                                {% if planlist.has_previous %}
-                                    <a href="/hrms/attlist/page/{{ planlist.previous_page_number }}"> 上一页 &nbsp;</a>
+                                {% if attlist.has_previous %}
+                                    <a href="/hrms/attlist/page/{{ attlist.previous_page_number }}"> 上一页 &nbsp;</a>
                                 {% else %}
                                     {# 当前页的不存在上一页时,上一页的按钮不可用#}
                                     <a href="#"> 上一页 &nbsp;</a>
-                                    {% if  planlist.has_next %}
+                                    {% if  attlist.has_next %}
                                         <span> | </span>
                                     {% endif %}
                                 {% endif %}
-                                {% if planlist.has_next %}
-                                    <a href="/hrms/attlist/page/{{ planlist.next_page_number }}"> 下一页 &nbsp;</a>
+                                {% if attlist.has_next %}
+                                    <a href="/hrms/attlist/page/{{ attlist.next_page_number }}"> 下一页 &nbsp;</a>
                                 {% else %}
                                     <a href="#"> 下一页 &nbsp;</a>
                                 {% endif %}

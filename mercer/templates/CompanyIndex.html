@@ -102,7 +102,7 @@
                         <div class="col-sm-6">
                              <label style="color: #2b81af">-</label>
                             {% for sample in departments %}
-                                <label style="color: #2b81af">{{ sample.name }}</label>
+                                <label style="color: #2b81af">&emsp;&nbsp;&nbsp;<{{ sample.name }}>&nbsp;&nbsp;</label>
                             {% endfor %}
                         </div>
                         <button class="btn btn-default col-sm-6" data-toggle="modal" data-target="#myModal3">添加部门</button>
@@ -216,7 +216,7 @@
                         <div class="col-sm-6">
                             <label style="color: #2b81af">-</label>
                             {% for sample in ranks %}
-                                <label style="color: #2b81af">{{ sample.name }}</label>
+                                <label style="color: #2b81af">&emsp;&nbsp;&nbsp;<{{ sample.name }}>&nbsp;&nbsp;</label>
                             {% endfor %}
                         </div>
                         <button class="btn btn-default col-sm-6" data-toggle="modal" data-target="#myModal5">添加职级</button>

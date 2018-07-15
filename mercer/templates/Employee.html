@@ -63,10 +63,6 @@
                     </li>
 
                     <li>
-                        <a href={% url "plan" %}>计划管理</a>
-                    </li>
-
-                    <li>
                         <a href={% url "company" %}>企业信息</a>
                     </li>
 
@@ -118,34 +114,37 @@
             <div class="panel-body">
                 <div class="row">
                     <div>
-                        <label class="col-sm-6">已授予期权 : {{ employee.number }}</label>
-                        <label class="col-sm-6">已归属期权 :</label>
+                        <label class="col-sm-6">已授予期权 : {{ qq_ysy }}</label>
+                        <label class="col-sm-6">已归属期权 : {{ qq_ygs }}</label>
                     </div>
                     <div>
-                        <label class="col-sm-6">未归属期权 : </label>
-                        <label class="col-sm-6">已授予限制性股票 : </label>
+                        <label class="col-sm-6">未归属期权 : {{ qq_wgs }}</label>
+                        <label class="col-sm-6">已授予限制性股票 : {{ rsu_ysy }}</label>
                     </div>
                     <div>
-                        <label class="col-sm-6">已归属限制性股票 : </label>
-                        <label class="col-sm-6">未归属限制性股票 : </label>
+                        <label class="col-sm-6">已归属限制性股票 : {{ rsu_ygs }}</label>
+                        <label class="col-sm-6">未归属限制性股票 : {{ rsu_wgs }}</label>
                     </div>
                     <div>
-                        <label class="col-sm-6">下次归属日期 : </label>
+                        <label class="col-sm-6">下次归属日期 : {{ next_date }}</label>
                     </div>
                 </div>
             </div>
         </div>
         <div class="panel panel-default" style="margin-top: 20px">
-            <div class="panel-heading">
-                <h4>计划信息</h4>
+            <div class="panel-heading" id="shouyuxinxi">
+                <h4>授予信息</h4>
             </div>
             <div class="panel-body">
                 <div class="panel-body" style="display: table;margin-left: auto;margin-right: auto">
                     <table class="sortable-theme-bootstrap" data-sortable>
                         <thead>
                         <tr>
+                            <th>
+                                序号
+                            </th>
                             <th data-sortable="false">
-                                计划名称
+                                所属计划
                             </th>
                             <th data-sortable="false">
                                 授予日期
@@ -171,13 +170,14 @@
                         </tr>
                         </thead>
                         <tbody>
-                        {% for sample in planist %}
+                        {% for sample in grantlist %}
                             <tr>
+                                <td>{{ forloop.counter }}</td>
                                 <td>{{ sample.name }}</td>
                                 <td>{{ sample.g_time }}</td>
                                 <td>{{ sample.tool }}</td>
-                                <td>{{ sample.sum }}</td>
-                                <td>{{ sample.now_sum }}</td>
+                                <td>{{ sample.onesum }}</td>
+                                <td>{{ sample.one_real_sum }}</td>
                                 <td>{{ sample.yiguishu }}</td>
                                 <td>{{ sample.weiguishu }}</td>
                                 <td><a class="btn btn-default" href="#div{{ forloop.counter }}">查看详情</a></td>
@@ -216,7 +216,7 @@
                                     是否已分配
                                 </th>
                                 <th data-sortable="false">
-                                    查看详情
+                                    操作
                                 </th>
                             </tr>
                             </thead>
@@ -229,101 +229,141 @@
                                     <td>{{ att.proportion }}</td>
                                     <td>{{ att.is_allot }}</td>
                                     <td>
-                                        <button class="btn btn-default" data-toggle="modal"
-                                                data-target="#myModal{{ att.id }}">修改
-                                        </button>
-                                        <form method="post"
-                                              action="/hrms/staff/edit_att/{{ employee.number }}-{{ att.id }}/"
-                                              class="form-horizontal"
-                                              role="form" id="myForm"
-                                              onsubmit="return ">{% csrf_token %}
-                                            <div class="modal fade" id="myModal{{ att.id }}" tabindex="-1" role="dialog"
-                                                 aria-labelledby="myModalLabel"
-                                                 aria-hidden="true">
-                                                <!--  定义模态框，过渡效果为淡入，id为myModal,tabindex=-1可以禁用使用tab切换，aria-labelledby用于引用模态框的标题，aria-hidden=true保持模态框在触发前窗口不可见  -->
-                                                <div class="modal-dialog">
-                                                    <!--  显示模态框对话框模型（若不写下一个div则没有颜色）  -->
-                                                    <div class="modal-content">
-                                                        <!--  显示模态框白色背景，所有内容都写在这个div里面  -->
+                                        <div class="row">
+                                            <button class="btn btn-default" data-toggle="modal"
+                                                    data-target="#myModal{{ att.id }}">修改
+                                            </button>
+                                            <form method="post"
+                                                  action="/hrms/staff/edit_att/{{ employee.number }}-{{ att.id }}/"
+                                                  class="form-horizontal"
+                                                  role="form" id="myForm"
+                                                  onsubmit="return ">{% csrf_token %}
+                                                <div class="modal fade" id="myModal{{ att.id }}" tabindex="-1"
+                                                     role="dialog"
+                                                     aria-labelledby="myModalLabel"
+                                                     aria-hidden="true">
+                                                    <!--  定义模态框，过渡效果为淡入，id为myModal,tabindex=-1可以禁用使用tab切换，aria-labelledby用于引用模态框的标题，aria-hidden=true保持模态框在触发前窗口不可见  -->
+                                                    <div class="modal-dialog">
+                                                        <!--  显示模态框对话框模型（若不写下一个div则没有颜色）  -->
+                                                        <div class="modal-content">
+                                                            <!--  显示模态框白色背景，所有内容都写在这个div里面  -->
 
-                                                        <div class="modal-body">
-                                                            <button type="button" class="close" data-dismiss="modal">
-                                                                &times;
-                                                            </button>
-                                                            <!--  模态框内容，我在此处添加一个表单 -->
-                                                            <div class="row">
-                                                                <div>
-                                                                    <h4 style="text-align: center">修改归属信息</h4>
-                                                                </div>
-                                                                <div>
-                                                                    <form class="form-horizontal" role="form">
-                                                                        <div class="form-group">
-                                                                            <label for="date"
-                                                                                   class="col-sm-2 control-label">归属日期</label>
-                                                                            <div class="col-sm-7">
-                                                                                <div class="input-group date form_datetime col-sm-7"
-                                                                                     data-date-format="yyyy-MM-dd"
-                                                                                     data-link-field="dtp_input1">
-                                                                                    <input class="form-control"
-                                                                                           size="16"
-                                                                                           placeholder="请选择归属日期"
-                                                                                           type="text" value=""
-                                                                                           id="date"
-                                                                                           name="date"
-                                                                                           value="{{ add.date }}"
-                                                                                           readonly>
-
-                                                                                    <span class="input-group-addon"><span
-                                                                                            class="glyphicon glyphicon-th"></span></span>
+                                                            <div class="modal-body">
+                                                                <button type="button" class="close"
+                                                                        data-dismiss="modal">
+                                                                    &times;
+                                                                </button>
+                                                                <!--  模态框内容，我在此处添加一个表单 -->
+                                                                <div class="row">
+                                                                    <div>
+                                                                        <h4 style="text-align: center">修改归属信息</h4>
+                                                                    </div>
+                                                                    <div>
+                                                                        <form class="form-horizontal" role="form">
+                                                                            <div class="form-group">
+                                                                                <label for="date"
+                                                                                       class="col-sm-2 control-label">归属日期</label>
+                                                                                <div class="col-sm-7">
+                                                                                    <input size="16" type="date"
+                                                                                           class="form-control"
+                                                                                           value="{{ att.date }}"
+                                                                                           id="date" name="date">
                                                                                 </div>
                                                                             </div>
-                                                                        </div>
-                                                                        <div class="form-group">
-                                                                            <label for="sum"
-                                                                                   class="col-sm-2 control-label">计划归属量</label>
-                                                                            <div class="col-sm-7">
-                                                                                <input type="text" id="sum"
-                                                                                       name="sum"
-                                                                                       class="form-control well"
-                                                                                       value="{{ att.sum }}"
-                                                                                       placeholder="请输入计划归属量"/>
+                                                                            <div class="form-group">
+                                                                                <label for="sum"
+                                                                                       class="col-sm-2 control-label">计划归属量</label>
+                                                                                <div class="col-sm-7">
+                                                                                    <input type="text" id="sum"
+                                                                                           name="sum"
+                                                                                           class="form-control well"
+                                                                                           value="{{ att.sum }}"
+                                                                                           placeholder="请输入计划归属量"/>
+                                                                                </div>
                                                                             </div>
-                                                                        </div>
-                                                                        <div class="form-group">
-                                                                            <label for="proportion"
-                                                                                   class="col-sm-2 control-label">归属系数</label>
-                                                                            <div class="col-sm-7">
-                                                                                <input type="text" id="proportion"
-                                                                                       name="proportion"
-                                                                                       class="form-control well"
-                                                                                       value="{{ att.proportion }}"
-                                                                                       placeholder="请输入归属系数"/>
+                                                                            <div class="form-group">
+                                                                                <label for="proportion"
+                                                                                       class="col-sm-2 control-label">归属系数</label>
+                                                                                <div class="col-sm-7">
+                                                                                    <input type="text" id="proportion"
+                                                                                           name="proportion"
+                                                                                           class="form-control well"
+                                                                                           value="{{ att.proportion }}"
+                                                                                           placeholder="请输入归属系数"/>
+                                                                                </div>
                                                                             </div>
-                                                                        </div>
-                                                                    </form>
+                                                                        </form>
+                                                                    </div>
                                                                 </div>
+
                                                             </div>
 
-                                                        </div>
+                                                            <div class="modal-footer">
+                                                                <!--  模态框底部样式，一般是提交或者确定按钮 -->
+                                                                <button type="submit" class="btn btn-default">确定
+                                                                </button>
+                                                                <button type="button" class="btn btn-default"
+                                                                        data-dismiss="modal">取消
+                                                                </button>
+                                                            </div>
 
-                                                        <div class="modal-footer">
-                                                            <!--  模态框底部样式，一般是提交或者确定按钮 -->
-                                                            <button type="submit" class="btn btn-default">确定</button>
-                                                            <button type="button" class="btn btn-default"
-                                                                    data-dismiss="modal">取消
-                                                            </button>
-                                                        </div>
+                                                        </div><!-- /.modal-content -->
+                                                    </div>
+                                                </div> <!-- /.modal -->
+                                            </form>
+                                            <button class="btn btn-default" data-toggle="modal"
+                                                    data-target="#my1Modal{{ att.id }}">删除
+                                            </button>
+                                            <form method="post"
+                                                  action="/hrms/staff/del_att/{{ employee.number }}-{{ att.id }}/"
+                                                  class="form-horizontal"
+                                                  role="form" id="myForm"
+                                                  onsubmit="return ">{% csrf_token %}
+                                                <div class="modal fade" id="my1Modal{{ att.id }}" tabindex="-1"
+                                                     role="dialog"
+                                                     aria-labelledby="myModalLabel"
+                                                     aria-hidden="true">
+                                                    <!--  定义模态框，过渡效果为淡入，id为myModal,tabindex=-1可以禁用使用tab切换，aria-labelledby用于引用模态框的标题，aria-hidden=true保持模态框在触发前窗口不可见  -->
+                                                    <div class="modal-dialog">
+                                                        <!--  显示模态框对话框模型（若不写下一个div则没有颜色）  -->
+                                                        <div class="modal-content">
+                                                            <!--  显示模态框白色背景，所有内容都写在这个div里面  -->
 
-                                                    </div><!-- /.modal-content -->
-                                                </div>
-                                            </div> <!-- /.modal -->
-                                        </form>
+                                                            <div class="modal-body">
+                                                                <button type="button" class="close"
+                                                                        data-dismiss="modal">
+                                                                    &times;
+                                                                </button>
+                                                                <!--  模态框内容，我在此处添加一个表单 -->
+                                                                <div class="row">
+                                                                    <div>
+                                                                        <h4 style="text-align: center">确定删除？</h4>
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>
+
+                                                            <div class="modal-footer">
+                                                                <!--  模态框底部样式，一般是提交或者确定按钮 -->
+                                                                <button type="submit" class="btn btn-default">确定
+                                                                </button>
+                                                                <button type="button" class="btn btn-default"
+                                                                        data-dismiss="modal">取消
+                                                                </button>
+                                                            </div>
+
+                                                        </div><!-- /.modal-content -->
+                                                    </div>
+                                                </div> <!-- /.modal -->
+                                            </form>
+                                        </div>
+
                                     </td>
                                 </tr>
                             {% endfor %}
                             </tbody>
                         </table>
-
+                        <a class="btn btn-default" href="#shouyuxinxi">返回</a>
                     </div>
 
                 </div>
@@ -425,7 +465,7 @@
                                                             <div class="col-sm-7">
 
                                                                 <select class="selectpicker" title="请选择部门"
-                                                                        id="department"
+                                                                        id="department" value ="{{ employee.department }}"
                                                                         name="department">
                                                                     {% for sample in department_list %}
                                                                         <option>{{ sample.name }}</option>
@@ -448,16 +488,18 @@
                                                             <label for="join_date"
                                                                    class="col-sm-2 control-label">入职时间</label>
                                                             <div class="col-sm-5">
-                                                                <input size="16" type="date" class="form-control" value="{{ employee.join_date }}"
-                                                                id="join_date" name="join_date">
+                                                                <input size="16" type="date" class="form-control"
+                                                                       value="{{ employee.join_date }}"
+                                                                       id="join_date" name="join_date">
                                                             </div>
                                                         </div>
                                                         <div class="form-group">
                                                             <label for="leave_date"
                                                                    class="col-sm-2 control-label">离职时间</label>
                                                             <div class="col-sm-5">
-                                                                <input size="16" type="date" class="form-control" value="{{ employee.leave_date }}"
-                                                                id="leave_date" name="leave_date">
+                                                                <input size="16" type="date" class="form-control"
+                                                                       value="{{ employee.leave_date }}"
+                                                                       id="leave_date" name="leave_date">
                                                             </div>
                                                         </div>
                                                     </form>
