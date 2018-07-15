@@ -10,6 +10,7 @@ from django.template.context_processors import csrf
 from .forms import *
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.hashers import make_password
 from .models import NewUser
 from django.core.exceptions import ObjectDoesNotExist
 from django.views.decorators.cache import cache_page
@@ -124,8 +125,75 @@ def AttributionList(request):
     return render(request, 'AttributionList.html')
 
 
-def CompanyIndex(request):
-    return render(request, 'CompanyIndex.html')
+def CompanyIndex(request,page=1):
+    loginform = LoginForm()
+    cname = request.user.c_name  # 获取当前登录的用户名
+    departmentlist = Department.objects.filter(c_id=cname)
+    ranklist = Rank.objects.filter(c_id=cname)
+    per_page_count = 5  # 每页显示的个数
+    endpaged = departmentlist.count() / per_page_count + 1
+    paginatord = Paginator(departmentlist, per_page_count)  # 分页
+    endpager = ranklist.count() / per_page_count + 1
+    paginatorr = Paginator(ranklist, per_page_count)  # 分页
+    try:
+        departmentlist = paginatord.page(int(page))
+    except PageNotAnInteger:
+        departmentlist = paginatord.page(1)
+    except EmptyPage:
+        departmentlist = paginatord.page(paginatord.num_pages)
+    try:
+        ranklist = paginatorr.page(int(page))
+    except PageNotAnInteger:
+        ranklist = paginatorr.page(1)
+    except EmptyPage:
+        ranklist = paginatorr.page(paginatorr.num_pages)
+    c = csrf(request)
+    c.update({'departments': departmentlist, 'ranks': ranklist, 'loginform': loginform, 'endpaged': endpaged, 'endpager':endpager, 'cname':cname})
+    return render(request, 'CompanyIndex.html', context=c)
+
+def EditCompany(request):
+    request.encoding = 'utf-8'
+    if request.method == 'POST':
+        cindex = request.POST
+        cname = cindex.get('cname')
+        cpwd = cindex.get('cpwd')
+        NewUser.objects.filter(username=request.user.username).update(c_name=cname,password=make_password(cpwd))
+    return redirect('/hrms/company')
+
+def EditDepartment(request):
+    request.encoding = 'utf-8'
+    if request.method == 'POST':
+        cindex = request.POST
+        dname = cindex.get('dname')
+        Department.objects.create(c_id=request.user.c_name,name=dname)
+    return redirect('/hrms/company')
+
+def DeleteDepartment(request):
+    request.encoding = 'utf-8'
+    if request.method == 'POST':
+        department2del = request.POST.getlist('department2del')
+        for sample in department2del:
+            hehe = sample.split(':', 1)
+            Department.objects.filter(number=hehe[0]).delete()  # 删除员工信息
+    return redirect('/hrms/company')
+
+
+def EditRank(request):
+    request.encoding = 'utf-8'
+    if request.method == 'POST':
+        cindex = request.POST
+        rname = cindex.get('rname')
+        Rank.objects.create(c_id=request.user.c_name,name=rname)
+    return redirect('/hrms/company')
+
+def DeleteRank(request):
+    request.encoding = 'utf-8'
+    if request.method == 'POST':
+        rank2del = request.POST.getlist('rank2del')
+        for sample in rank2del:
+            hehe = sample.split(':', 1)
+            Rank.objects.filter(number=hehe[0]).delete()  # 删除员工信息
+    return redirect('/hrms/company')
 
 
 def AddPlan(request):

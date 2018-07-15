@@ -13,6 +13,11 @@ urlpatterns = [
     url(r'^staff/$', views.StaffManage, name='staff'),
     url(r'^staff/adde$', views.AddEmployee, name='adde'),#添加员工
     url(r'^staff/dele$', views.DeleteEmployee, name='dele'),  # 删除员工
+    url(r'^company/editcompany$', views.EditCompany, name='editcompany'),#修改企业信息
+    url(r'^company/editdepartment$', views.EditDepartment, name='editdepartment'),  # 编辑部门
+    url(r'^company/editrank$', views.EditRank, name='editrank'),#编辑职级
+    url(r'^company/deletedepartment$', views.DeleteDepartment, name='deletedepartment'),  # 编辑部门
+    url(r'^company/deleterank$', views.DeleteRank, name='deleterank'),  # 编辑职级
     url(r'^staff/employee/(?P<eid>(.*?))/$', views.EmployeeIndex, name='eIndex'),#查询具体员工信息
     url(r'^staff/edit/(?P<eid>(.*?))/$', views.EditEmployee, name='editE'),  # 编辑员工信息
     url(r'^staff/page/(\d+)/$', views.StaffManage),
