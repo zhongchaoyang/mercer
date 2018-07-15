@@ -45,10 +45,10 @@
             </div>
             <div class="collapse navbar-collapse" id="navbar">
                 <ul class="nav navbar-nav">
-                    <li class="active">
+                    <li>
                         <a href={% url "index" %}>首页</a>
                     </li>
-                    <li>
+                    <li class="active">
                         <a href={% url "staff" %}>人员管理</a>
                     </li>
 
@@ -106,7 +106,8 @@
                                 data-toggle="modal" data-target="#myModal1">编辑信息
                         </button>
                     </div>
-                    <form method="post" action="/hrms/staff/edit/{{ employee.number }}/" class="form-horizontal" role="form" id="myForm"
+                    <form method="post" action="/hrms/staff/edit/{{ employee.number }}/" class="form-horizontal"
+                          role="form" id="myForm"
                           onsubmit="return ">{% csrf_token %}
                         <div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
                              aria-hidden="true">
@@ -224,23 +225,49 @@
                 <h4>归属详情</h4>
             </div>
             <div class="panel-body">
-                <div class="row">
-                    <div>
-                        <label class="col-sm-6">已授予期权 : {{ employee.number }}</label>
-                        <label class="col-sm-6">已归属期权 :</label>
-                    </div>
-                    <div>
-                        <label class="col-sm-6">未归属期权 : </label>
-                        <label class="col-sm-6">已授予限制性股票 : </label>
-                    </div>
-                    <div>
-                        <label class="col-sm-6">已归属限制性股票 : </label>
-                        <label class="col-sm-6">未归属限制性股票 : </label>
-                    </div>
-                    <div>
-                        <label class="col-sm-6">下次归属日期 : </label>
-                    </div>
+                <div class="panel-body" style="display: table;margin-left: auto;margin-right: auto">
+                    <table class="sortable-theme-bootstrap" data-sortable>
+                        <thead>
+                        <tr>
+                            <th data-sortable="false">
+                                授予日期
+                            </th>
+                            <th data-sortable="false">
+                                激励工具
+                            </th>
+                            <th>
+                                计划授予量
+                            </th>
+                            <th>
+                                实际授予量
+                            </th>
+                            <th>
+                                已归属
+                            </th>
+                            <th>
+                                未归属
+                            </th>
+                            <th data-sortable="false">
+                                查看详情
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+{% comment %}                        {% for sample in staffs %}
+                            <tr>
+                                <td>{{ sample.rank }}</td>
+                                <td>{{ sample.join_date }}</td>
+                                <td>{{ yishouyu }}</td>
+                                <td>{{ yiguishu }}</td>
+                                <td>{{ weiguishu }}</td>
+                                <td>{{ sample.leave_date }}</td>
+                            </tr>
+                        {% endfor %}{% endcomment %}
+                        </tbody>
+                    </table>
+
                 </div>
+
             </div>
         </div>
     </div>

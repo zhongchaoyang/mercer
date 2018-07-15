@@ -46,23 +46,24 @@ class Employee(models.Model):   #员工表
     def __str__(self):
         return self.number
 
+
 class Plan(models.Model):
     name = models.CharField('name', default='', max_length=256) #计划名称
-    start_date = models.DateTimeField()#开始实施时间
+    start_date = models.CharField('start_date', default='', max_length=256)#开始实施时间
     validity_time = models.FloatField('validity_time',default= 0.0)#有效期
     sum = models.FloatField('sum',default= 0.0)#计划总量
-    g_time = models.DateTimeField()#授予日期
+    g_time = models.CharField('g_time', default='', max_length=256)#授予日期
     tool = models.CharField('tool',default='',max_length=256)#使用的工具
     count = models.IntegerField('count', default=0)#计划覆盖的人数
 
     def __str__(self):
-        return self.id
+        return self.name.encode('utf-8')
 
 
 class Attribution(models.Model):
     plan_id = models.IntegerField('plan_id')#对应计划
     employee_id = models.CharField('employee_id',default='',max_length=256)#对应员工
-    date = models.DateTimeField()#归属日期
+    date = models.CharField('date', default='', max_length=256)#归属日期
     proportion = models.FloatField('proportion',default=0.0)#分配系数
     is_allot = models.BooleanField('is_allot',default=0) #是否已经归属
 

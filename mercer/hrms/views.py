@@ -25,7 +25,7 @@ def index(request):
     return render(request, 'index.html')
 
 
-def StaffManage(request, page=1):
+def StaffManage(request, page=1):#人员管理主页面
     loginform = LoginForm()
     username = request.user.username  # 获取当前登录的用户名
     department_list = Department.objects.filter(c_id=username)
@@ -50,7 +50,7 @@ def StaffManage(request, page=1):
     return render(request, 'StaffManage.html', context=c)
 
 
-def AddEmployee(request):
+def AddEmployee(request):  #添加员工
     request.encoding = 'utf-8'
     if request.method == 'POST':
         eindex = request.POST
@@ -63,7 +63,7 @@ def AddEmployee(request):
     return redirect('/hrms/staff')
 
 
-def DeleteEmployee(request):
+def DeleteEmployee(request):  #删除员工
     request.encoding = 'utf-8'
     if request.method == 'POST':
         staff2del = request.POST.getlist('staff2del')
@@ -85,7 +85,7 @@ def EmployeeIndex(request, eid):  # 查看单个员工页面
     return render(request, 'Employee.html', context=c)
 
 
-def EditEmployee(request, eid):
+def EditEmployee(request, eid): #编辑员工信息
     request.encoding = 'utf-8'
     if request.method == 'POST':
         eindex = request.POST
@@ -98,8 +98,22 @@ def EditEmployee(request, eid):
     return redirect(hehe)
 
 
-def PlanManage(request):
-    return render(request, 'PlanManage.html')
+def PlanManage(request, page=1):#计划管理页面主页
+    loginform = LoginForm()
+    username = request.user.username  # 获取当前登录的用户名
+    planlist = Plan.objects.order_by('id').all()
+    per_page_count = 5  # 每页显示的个数
+    endpage = planlist.count() / per_page_count + 1
+    paginator = Paginator(planlist, per_page_count)  # 分页
+    try:
+        planlist = paginator.page(int(page))
+    except PageNotAnInteger:
+        planlist = paginator.page(1)
+    except EmptyPage:
+        planlist = paginator.page(paginator.num_pages)
+    c = csrf(request)
+    c.update({'planlist': planlist, 'loginform': loginform, 'endpage': endpage,})
+    return render(request, 'PlanManage.html', context=c)
 
 
 def PlanList(request):
