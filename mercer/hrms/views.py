@@ -31,7 +31,7 @@ def StaffManage(request, page=1):#人员管理主页面
     username = request.user.username  # 获取当前登录的用户名
     department_list = Department.objects.filter(c_id=username)
     rank_list = Rank.objects.filter(c_id=username)
-    stafflist = Employee.objects.order_by('number').all()
+    stafflist = Employee.objects.filter(c_number=username)
     per_page_count = 5  # 每页显示的个数
     endpage = stafflist.count() / per_page_count + 1
     paginator = Paginator(stafflist, per_page_count)  # 分页
@@ -52,6 +52,7 @@ def StaffManage(request, page=1):#人员管理主页面
 
 
 def AddEmployee(request):  #添加员工
+    username = request.user.username  # 获取当前登录的用户名
     request.encoding = 'utf-8'
     if request.method == 'POST':
         eindex = request.POST
@@ -60,7 +61,8 @@ def AddEmployee(request):  #添加员工
         department = eindex.get('department')
         rank = eindex.get('rank')
         join_date = eindex.get('join_date')
-        Employee.objects.create(number=enumber, name=ename, department=department, rank=rank, join_date=join_date)
+        Employee.objects.create(number=enumber, name=ename, department=department, rank=rank, join_date=join_date,
+                                c_number=username)
     return redirect('/hrms/staff')
 
 
@@ -153,30 +155,14 @@ def AttributionList(request, page=1):
     return render(request, 'AttributionList.html', context=c)
 
 
-def CompanyIndex(request,page=1):
+def CompanyIndex(request):
     loginform = LoginForm()
-    cname = request.user.c_name  # 获取当前登录的用户名
+    cname = request.user.username  # 获取当前登录的用户名
     departmentlist = Department.objects.filter(c_id=cname)
     ranklist = Rank.objects.filter(c_id=cname)
-    per_page_count = 5  # 每页显示的个数
-    endpaged = departmentlist.count() / per_page_count + 1
-    paginatord = Paginator(departmentlist, per_page_count)  # 分页
-    endpager = ranklist.count() / per_page_count + 1
-    paginatorr = Paginator(ranklist, per_page_count)  # 分页
-    try:
-        departmentlist = paginatord.page(int(page))
-    except PageNotAnInteger:
-        departmentlist = paginatord.page(1)
-    except EmptyPage:
-        departmentlist = paginatord.page(paginatord.num_pages)
-    try:
-        ranklist = paginatorr.page(int(page))
-    except PageNotAnInteger:
-        ranklist = paginatorr.page(1)
-    except EmptyPage:
-        ranklist = paginatorr.page(paginatorr.num_pages)
+    company = NewUser.objects.get(username=cname)
     c = csrf(request)
-    c.update({'departments': departmentlist, 'ranks': ranklist, 'loginform': loginform, 'endpaged': endpaged, 'endpager':endpager, 'cname':cname})
+    c.update({'departments': departmentlist, 'ranks': ranklist, 'loginform': loginform, 'company':company})
     return render(request, 'CompanyIndex.html', context=c)
 
 def EditCompany(request):
@@ -184,8 +170,9 @@ def EditCompany(request):
     if request.method == 'POST':
         cindex = request.POST
         cname = cindex.get('cname')
+        cadd = cindex.get('cadd')
         cpwd = cindex.get('cpwd')
-        NewUser.objects.filter(username=request.user.username).update(c_name=cname,password=make_password(cpwd))
+        NewUser.objects.filter(username=request.user.username).update(c_name=cname,password=make_password(cpwd), c_address=cadd)
     return redirect('/hrms/company')
 
 def EditDepartment(request):
@@ -193,7 +180,7 @@ def EditDepartment(request):
     if request.method == 'POST':
         cindex = request.POST
         dname = cindex.get('dname')
-        Department.objects.create(c_id=request.user.c_name,name=dname)
+        Department.objects.create(c_id=request.user.username,name=dname)
     return redirect('/hrms/company')
 
 def DeleteDepartment(request):
@@ -211,7 +198,7 @@ def EditRank(request):
     if request.method == 'POST':
         cindex = request.POST
         rname = cindex.get('rname')
-        Rank.objects.create(c_id=request.user.c_name,name=rname)
+        Rank.objects.create(c_id=request.user.username,name=rname)
     return redirect('/hrms/company')
 
 def DeleteRank(request):
