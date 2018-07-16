@@ -58,7 +58,7 @@
                         <ul class="dropdown-menu" aria-labelledby="about-us">
                             <li><a href={% url "plan" %}>计划信息</a></li>
                             <li><a href={% url "planlist" %}>授予记录</a></li>
-                            <li  class="active"><a href={% url "attlist" %}>归属记录</a></li>
+                            <li class="active"><a href={% url "attlist" %}>归属记录</a></li>
                         </ul>
                     </li>
 
@@ -133,79 +133,29 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <td>
-                                1
-                            </td>
-                            <td>
-                                TB - Monthly
-                            </td>
-                            <td>
-                                01/04/2012
-                            </td>
-                            <td>
-                                Default
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                1
-                            </td>
-                            <td>
-                                TB - Monthly
-                            </td>
-                            <td>
-                                01/04/2012
-                            </td>
-                            <td>
-                                Approved
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                2
-                            </td>
-                            <td>
-                                TB - Monthly3
-                            </td>
-                            <td>
-                                02/04/2012
-                            </td>
-                            <td>
-                                Declined
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                3
-                            </td>
-                            <td>
-                                TB - Monthly2
-                            </td>
-                            <td>
-                                03/04/2012
-                            </td>
-                            <td>
-                                Pending
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                4
-                            </td>
-                            <td>
-                                TB - Monthly1
-                            </td>
-                            <td>
-                                04/04/2012
-                            </td>
-                            <td>
-                                Call in to confirm
-                            </td>
-                        </tr>
                         </tbody>
                     </table>
-
+                    <!-- 分页 -->
+                    <div style="padding-right:10px">
+                            <span style="float: right">
+                                 <a href="/hrms/attlist/page/1"> 第一页 |  &nbsp;</a>
+                                {% if planlist.has_previous %}
+                                    <a href="/hrms/attlist/page/{{ planlist.previous_page_number }}"> 上一页 &nbsp;</a>
+                                {% else %}
+                                    {# 当前页的不存在上一页时,上一页的按钮不可用#}
+                                    <a href="#"> 上一页 &nbsp;</a>
+                                    {% if  planlist.has_next %}
+                                        <span> | </span>
+                                    {% endif %}
+                                {% endif %}
+                                {% if planlist.has_next %}
+                                    <a href="/hrms/attlist/page/{{ planlist.next_page_number }}"> 下一页 &nbsp;</a>
+                                {% else %}
+                                    <a href="#"> 下一页 &nbsp;</a>
+                                {% endif %}
+                                <a href="/hrms/attlist/page/{{ endpage }}">| 末尾页 </a>
+                            </span>
+                    </div>
 
                 </div>
             </div>
