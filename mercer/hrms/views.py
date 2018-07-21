@@ -26,7 +26,7 @@ def index(request):
     return render(request, 'index.html')
 
 
-def StaffManage(request, page=1):#人员管理主页面
+def StaffManage(request, page=1):  # 人员管理主页面
     loginform = LoginForm()
     username = request.user.username  # 获取当前登录的用户名
     department_list = Department.objects.filter(c_id=username)
@@ -51,7 +51,7 @@ def StaffManage(request, page=1):#人员管理主页面
     return render(request, 'StaffManage.html', context=c)
 
 
-def AddEmployee(request):  #添加员工
+def AddEmployee(request):  # 添加员工
     username = request.user.username  # 获取当前登录的用户名
     request.encoding = 'utf-8'
     if request.method == 'POST':
@@ -61,12 +61,14 @@ def AddEmployee(request):  #添加员工
         department = eindex.get('department')
         rank = eindex.get('rank')
         join_date = eindex.get('join_date')
+        leave_date = eindex.get('leave_date')
         Employee.objects.create(number=enumber, name=ename, department=department, rank=rank, join_date=join_date,
+                                leave_date=leave_date,
                                 c_number=username)
     return redirect('/hrms/staff')
 
 
-def DeleteEmployee(request):  #删除员工
+def DeleteEmployee(request):  # 删除员工
     request.encoding = 'utf-8'
     if request.method == 'POST':
         staff2del = request.POST.getlist('staff2del')
@@ -78,17 +80,28 @@ def DeleteEmployee(request):  #删除员工
 
 def EmployeeIndex(request, eid):  # 查看单个员工页面
     loginform = LoginForm()
-    employee = Employee.objects.get(number=eid)
+    employee = Employee.objects.get(number=eid, c_number=request.user.username)
     username = request.user.username  # 获取当前登录的用户名
     department_list = Department.objects.filter(c_id=username)
     rank_list = Rank.objects.filter(c_id=username)
+    guishu = Attribution.objects.filter(c_id=username, e_id=eid)
+    planist = []
+    for sample in guishu:
+        oneplan = Plan.objects.get(name=sample.plan_name)
+        if oneplan not in planist:
+            planist.append(oneplan)
+    attlist = []
+    for sample1 in planist:
+        oneatt = Attribution.objects.filter(plan_name=sample1.name)
+        attlist.append(oneatt)
     c = csrf(request)
     c.update({'employee': employee, 'loginform': loginform,
-              'department_list': department_list, 'rank_list': rank_list})
+              'department_list': department_list, 'rank_list': rank_list, 'planist': planist,
+              'attlist': attlist})
     return render(request, 'Employee.html', context=c)
 
 
-def EditEmployee(request, eid): #编辑员工信息
+def EditEmployee(request, eid):  # 编辑员工信息
     request.encoding = 'utf-8'
     if request.method == 'POST':
         eindex = request.POST
@@ -96,12 +109,26 @@ def EditEmployee(request, eid): #编辑员工信息
         department = eindex.get('department')
         rank = eindex.get('rank')
         join_date = eindex.get('join_date')
-        Employee.objects.filter(number= eid).update(name=ename,department = department, rank = rank,join_date = join_date)
-    hehe = '/hrms/staff/employee/'+eid
+        leave_date = eindex.get('leave_date')
+        Employee.objects.filter(number=eid).update(name=ename, department=department, rank=rank, join_date=join_date,
+                                                   leave_date=leave_date)
+    hehe = '/hrms/staff/employee/' + eid
     return redirect(hehe)
 
 
-def PlanManage(request, page=1):#计划管理页面主页
+def EditEAtt(request, eid, att_id):  # 编辑员工归属信息
+    request.encoding = 'utf-8'
+    if request.method == 'POST':
+        attindex = request.POST
+        date = attindex.get('date')
+        sum = attindex.get('sum')
+        proportion = attindex.get('proportion')
+        Attribution.objects.filter(id=att_id).update(date=date, sum=sum, proportion=proportion)
+    hehe = '/hrms/staff/employee/' + eid
+    return redirect(hehe)
+
+
+def PlanManage(request, page=1):  # 计划管理页面主页
     loginform = LoginForm()
     username = request.user.username  # 获取当前登录的用户名
     planlist = Plan.objects.order_by('id').all()
@@ -115,11 +142,11 @@ def PlanManage(request, page=1):#计划管理页面主页
     except EmptyPage:
         planlist = paginator.page(paginator.num_pages)
     c = csrf(request)
-    c.update({'planlist': planlist, 'loginform': loginform, 'endpage': endpage,})
+    c.update({'planlist': planlist, 'loginform': loginform, 'endpage': endpage, })
     return render(request, 'PlanManage.html', context=c)
 
 
-def PlanList(request, page=1): #授予记录页面
+def PlanList(request, page=1):  # 授予记录页面
     loginform = LoginForm()
     username = request.user.username  # 获取当前登录的用户名
     planlist = Plan.objects.order_by('id').all()
@@ -133,7 +160,7 @@ def PlanList(request, page=1): #授予记录页面
     except EmptyPage:
         planlist = paginator.page(paginator.num_pages)
     c = csrf(request)
-    c.update({'planlist': planlist, 'loginform': loginform, 'endpage': endpage,})
+    c.update({'planlist': planlist, 'loginform': loginform, 'endpage': endpage, })
     return render(request, 'PlanList.html', context=c)
 
 
@@ -151,7 +178,7 @@ def AttributionList(request, page=1):
     except EmptyPage:
         planlist = paginator.page(paginator.num_pages)
     c = csrf(request)
-    c.update({'planlist': planlist, 'loginform': loginform, 'endpage': endpage,})
+    c.update({'planlist': planlist, 'loginform': loginform, 'endpage': endpage, })
     return render(request, 'AttributionList.html', context=c)
 
 
@@ -162,8 +189,9 @@ def CompanyIndex(request):
     ranklist = Rank.objects.filter(c_id=cname)
     company = NewUser.objects.get(username=cname)
     c = csrf(request)
-    c.update({'departments': departmentlist, 'ranks': ranklist, 'loginform': loginform, 'company':company})
+    c.update({'departments': departmentlist, 'ranks': ranklist, 'loginform': loginform, 'company': company})
     return render(request, 'CompanyIndex.html', context=c)
+
 
 def EditCompany(request):
     request.encoding = 'utf-8'
@@ -172,24 +200,26 @@ def EditCompany(request):
         cname = cindex.get('cname')
         cadd = cindex.get('cadd')
         cpwd = cindex.get('cpwd')
-        NewUser.objects.filter(username=request.user.username).update(c_name=cname,password=make_password(cpwd), c_address=cadd)
+        NewUser.objects.filter(username=request.user.username).update(c_name=cname, password=make_password(cpwd),
+                                                                      c_address=cadd)
     return redirect('/hrms/company')
+
 
 def EditDepartment(request):
     request.encoding = 'utf-8'
     if request.method == 'POST':
         cindex = request.POST
         dname = cindex.get('dname')
-        Department.objects.create(c_id=request.user.username,name=dname)
+        Department.objects.create(c_id=request.user.username, name=dname)
     return redirect('/hrms/company')
+
 
 def DeleteDepartment(request):
     request.encoding = 'utf-8'
     if request.method == 'POST':
         department2del = request.POST.getlist('department2del')
         for sample in department2del:
-            hehe = sample.split(':', 1)
-            Department.objects.filter(number=hehe[0]).delete()  # 删除员工信息
+            Department.objects.filter(name=sample).delete()  # 删除员工信息
     return redirect('/hrms/company')
 
 
@@ -198,16 +228,16 @@ def EditRank(request):
     if request.method == 'POST':
         cindex = request.POST
         rname = cindex.get('rname')
-        Rank.objects.create(c_id=request.user.username,name=rname)
+        Rank.objects.create(c_id=request.user.username, name=rname)
     return redirect('/hrms/company')
+
 
 def DeleteRank(request):
     request.encoding = 'utf-8'
     if request.method == 'POST':
         rank2del = request.POST.getlist('rank2del')
         for sample in rank2del:
-            hehe = sample.split(':', 1)
-            Rank.objects.filter(number=hehe[0]).delete()  # 删除员工信息
+            Rank.objects.filter(name=sample).delete()  # 删除员工信息
     return redirect('/hrms/company')
 
 
