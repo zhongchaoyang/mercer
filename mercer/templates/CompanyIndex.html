@@ -96,7 +96,7 @@
                         <label class="col-sm-6">企业地址 : {{ company.c_address }}</label>
                     </div>
                     <div>
-                        <label class="col-sm-1">部门 : </label>
+                        <label class="col-sm-2">部门 : </label>
                         <div class="col-sm-6">
                             {% for sample in departments %}
                                 <label>{{ sample.name }}</label>
@@ -209,7 +209,7 @@
                         </form>
                     </div>
                     <div>
-                        <label class="col-sm-1">职级 : {{ employee.department }}</label>
+                        <label class="col-sm-2">职级 : </label>
                         <div class="col-sm-6">
                             {% for sample in ranks %}
                                 <label>{{ sample.name }}</label>
@@ -321,8 +321,69 @@
                             </div> <!-- /.modal -->
                         </form>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div><!--/.row-->
+
+
+    <div class="col-md-2">
+        {% if request.user.is_authenticated %}
+            <!-- Form -->
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        <span class="glyphicon glyphicon-user"></span>
+                        已登录
+                    </h3>
+                </div>
+                <div class="panel-body">
+                    <div class="form-group">hi:{{ user }} <a href={% url "logout" %}><input class="btn btn-default"
+                                                                                            type="submit"
+                                                                                            value="Logout"/></a></div>
+                </div>
+            </div>
+        {% else %}
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        <span class="glyphicon glyphicon-log-in"></span>
+                        登录
+                    </h3>
+                </div>
+                <div class="panel-body">
+                    <form action={% url "login" %} method="post">
+                        {% csrf_token %}
+                        {{ loginform.non_field_errors }}
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="uid" name="uid" placeholder="用户名">
+                        </div>
+                        <div class="form-group">
+                            <input type="password" name="pwd" required placeholder="密码" class="form-control" id="pwd"/>
+                        </div>
+                        <button type="submit" class="btn btn-default">登录</button>
+                        <a href="{% url "register" %}" class="btn btn-default" style="float: right">注册</a>
+                    </form>
+                </div>
+            </div>
+        {% endif %}
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    <span class="glyphicon glyphicon-tasks"></span>
+                    操作
+                </h3>
+            </div>
+            <div class="panel-body">
+                <div class="row">
                     <div>
-                        <button class="btn btn-default" data-toggle="modal" style="display: table;margin-left: auto;margin-right: auto" data-target="#myModal2">修改企业信息</button>
+                        <button class="btn btn-default" style="display: table;margin-left: auto;margin-right: auto">
+                            基本信息
+                        </button>
+                    </div>
+                    <div>
+                        <button class="btn btn-default" data-toggle="modal" style="display: table;margin-left: auto;margin-right: auto;margin-top: 40px" data-target="#myModal2">修改企业信息</button>
                         <form method="post" action="/hrms/company/editcompany" class="form-horizontal" role="form"
                               id="myForm"
                               onsubmit="return ">{% csrf_token %}
@@ -388,72 +449,6 @@
                                 </div>
                             </div> <!-- /.modal -->
                         </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div><!--/.row-->
-
-
-    <div class="col-md-2">
-        {% if request.user.is_authenticated %}
-            <!-- Form -->
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h3 class="panel-title">
-                        <span class="glyphicon glyphicon-user"></span>
-                        已登录
-                    </h3>
-                </div>
-                <div class="panel-body">
-                    <div class="form-group">hi:{{ user }} <a href={% url "logout" %}><input class="btn btn-default"
-                                                                                            type="submit"
-                                                                                            value="Logout"/></a></div>
-                </div>
-            </div>
-        {% else %}
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h3 class="panel-title">
-                        <span class="glyphicon glyphicon-log-in"></span>
-                        登录
-                    </h3>
-                </div>
-                <div class="panel-body">
-                    <form action={% url "login" %} method="post">
-                        {% csrf_token %}
-                        {{ loginform.non_field_errors }}
-                        <div class="form-group">
-                            <input type="text" class="form-control" id="uid" name="uid" placeholder="用户名">
-                        </div>
-                        <div class="form-group">
-                            <input type="password" name="pwd" required placeholder="密码" class="form-control" id="pwd"/>
-                        </div>
-                        <button type="submit" class="btn btn-default">登录</button>
-                        <a href="{% url "register" %}" class="btn btn-default" style="float: right">注册</a>
-                    </form>
-                </div>
-            </div>
-        {% endif %}
-
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title">
-                    <span class="glyphicon glyphicon-tasks"></span>
-                    操作
-                </h3>
-            </div>
-            <div class="panel-body">
-                <div class="row">
-                    <div>
-                        <button class="btn btn-default" style="display: table;margin-left: auto;margin-right: auto">
-                            基本信息
-                        </button>
-                    </div>
-                    <div>
-                        <button class="btn btn-default"
-                                style="display: table;margin-left: auto;margin-right: auto;margin-top: 40px">激励详情
-                        </button>
                     </div>
                 </div>
             </div>

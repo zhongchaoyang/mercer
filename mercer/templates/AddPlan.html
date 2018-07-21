@@ -85,26 +85,26 @@
     <div class="col-md-8">
         <div class="panel panel-default">
             <h3 style="display: table;margin-left: auto;margin-right: auto">添加计划</h3>
-            <form class="form-horizontal" role="form">
+            <form method="post" class="form-horizontal" role="form">{% csrf_token %}
                 <div class="form-group">
-                    <label for="uname" class="col-sm-2 control-label">计划名称</label>
-                    <div class="col-sm-7">
-                        <input type="text" id="uname" name="uname"
+                    <label for="pname" class="col-sm-2 control-label">计划名称</label>
+                    <div class="col-sm-9">
+                        <input type="text" id="pname" name="pname"
                                class="form-control well"
                                placeholder="请输入计划名称"/>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="upwd" class="col-sm-2 control-label">人数</label>
-                    <div class="col-sm-7">
-                        <input type="number" id="upwd" name="upwd"
+                    <label for="pnum" class="col-sm-2 control-label">人数</label>
+                    <div class="col-sm-9">
+                        <input type="number" id="pnum" name="pnum"
                                class="form-control well"
                                placeholder="请输入人数"/>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="uname" class="col-sm-2 control-label">授予日期</label>
-                    <div class="col-sm-7">
+                    <label for="pdate" class="col-sm-2 control-label">授予日期</label>
+                    <div class="col-sm-9">
                         <div class="input-group date form_datetime col-sm-7"
                              data-date="2018-07-10"
                              data-date-format="yyyy-MM-dd"
@@ -118,23 +118,23 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="uname" class="col-sm-2 control-label">工具</label>
-                    <div class="col-sm-3">
-                        <input type="text" id="uname" name="uname"
+                    <label for="ptool" class="col-sm-2 control-label">工具</label>
+                    <div class="col-sm-4">
+                        <input type="text" id="ptool" name="ptool"
                                class="form-control well"
                                placeholder="请输入计划所使用的工具"/>
                     </div>
-                    <label for="upwd" class="col-sm-1 control-label">等待期</label>
-                    <div class="col-sm-3">
-                        <input type="number" id="upwd" name="upwd"
+                    <label for="pwait" class="col-sm-1 control-label">等待期</label>
+                    <div class="col-sm-4">
+                        <input type="number" id="pwait" name="pwait"
                                class="form-control well"
                                placeholder="请输入该计划的等待期（月数）"/>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="upwd" class="col-sm-2 control-label">归属详细</label>
-                    <div class="col-sm-7">
+                    <label for="pdeliver" class="col-sm-2 control-label">归属详细</label>
+                    <div class="col-sm-9">
                         <!--动态增加的内容都添加在id="formpart"的div后面-->
                         <div id="formpart"></div>
                         <a class="btn btn-default" id="addform">添加归属信息</a>
@@ -143,8 +143,8 @@
 
 
                 <div class="form-group">
-                    <label for="uname" class="col-sm-2 control-label">归属日期方式</label>
-                    <div class="col-sm-7">
+                    <label for="pway" class="col-sm-2 control-label">归属日期方式</label>
+                    <div class="col-sm-9">
                         <select class="selectpicker" title="请选择归属日期方式">
                             <option>月</option>
                             <option>季</option>
@@ -153,25 +153,23 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">选择员工</label>
-                    <div class="col-sm-3">
+                    <label for="pemployee" class="col-sm-2 control-label">选择员工</label>
+                    <div class="col-sm-4">
                         <select class="selectpicker" data-size="5" multiple data-live-search="true"
                                 data-live-search-placeholder="搜索"
                                 data-actions-box="true"
-                                data-selected-text-format="count > 3">　
-                            <optgroup label="filter1">　　　　
-                                <option>1</option>　　　　
-                                <option>2</option>
-                                <option>3</option>　　　
-                                <option>4</option>
-                                <option>5</option>
-                                <option>6</option>　　
+                                data-selected-text-format="count > 3"
+                                id="pemployee" name="pemployee">　
+                            <optgroup label="请选择员工">　　　　
+                                {% for sample in employeelist %}
+                                <option>{{ sample.name }}</option>
+                                {% endfor %}　　
                             </optgroup>
                         </select>
                     </div>
-                    <label for="upwd" class="col-sm-1 control-label">授予量</label>
-                    <div class="col-sm-3">
-                        <input type="number" id="upwd" name="upwd"
+                    <label for="psum" class="col-sm-1 control-label">授予量</label>
+                    <div class="col-sm-4">
+                        <input type="number" id="psum" name="psum"
                                class="form-control well"
                                placeholder="请输入授予给员工的总量"/>
                     </div>
@@ -307,11 +305,11 @@
     $("#addform").click(function () {
         //添加的内容
         var addform = '<div class="form-group">' +
-            '<div class="col-sm-3"><input size="16" type="date" ' +
+            '<div class="col-sm-4"><input size="16" type="date" id="startdate" name="startdate" ' +
             ' class="form-control" ></div>' +
-            '<label class="col-sm-1 control-label">至</label><div class="col-sm-3"><input size="16" type="date" ' +
+            '<label class="col-sm-1 control-label">至</label><div class="col-sm-4"><input size="16" type="date" id="enddate" name="enddate"' +
             ' class="form-control" ></div>' +
-            '<div class="col-sm-4"><input type="text" id="upwd" name="upwd" class="form-control" placeholder="请输入该计划归属的比例"/></div></div>';
+            '<div class="col-sm-3"><input type="text" id="pprop" name="pprop" class="form-control" placeholder="请输入归属比例"/></div></div>';
 
 
         $("#formpart").after($(addform));

@@ -189,7 +189,7 @@ def DeleteDepartment(request):
         department2del = request.POST.getlist('department2del')
         for sample in department2del:
             hehe = sample.split(':', 1)
-            Department.objects.filter(number=hehe[0]).delete()  # 删除员工信息
+            Department.objects.filter(name=hehe[0]).delete()  # 删除员工信息
     return redirect('/hrms/company')
 
 
@@ -207,12 +207,29 @@ def DeleteRank(request):
         rank2del = request.POST.getlist('rank2del')
         for sample in rank2del:
             hehe = sample.split(':', 1)
-            Rank.objects.filter(number=hehe[0]).delete()  # 删除员工信息
+            Rank.objects.filter(name=hehe[0]).delete()  # 删除员工信息
     return redirect('/hrms/company')
 
 
 def AddPlan(request):
-    return render(request, 'AddPlan.html')
+    loginform = LoginForm()
+    username = request.user.username
+    request.encoding = 'utf-8'
+    employeelist = Employee.objects.filter(c_number=username)
+    if request.method == 'POST':
+        pindex = request.POST
+        pname = pindex.get('pname')
+        pnum = pindex.get('pnum')
+        ptool = pindex.get('ptool')
+        pwait = pindex.get('pwait')
+        startdate = pindex.get('startdate')
+        enddate = pindex.get('enddate')
+        pway = pindex.get('pway')
+        psum = pindex.get('psum')
+        Plan.objects.create(name=pname, start_date=startdate, tool=ptool, sum=psum)
+    c = csrf(request)
+    c.update({'employeelist': employeelist, 'loginform': loginform})
+    return render(request, 'AddPlan.html', context=c)
 
 
 def log_in(request):
