@@ -135,6 +135,19 @@
                         </tr>
                         </thead>
                         <tbody>
+                        {% for sample in planlist %}
+                            <tr>
+                                <td>{{ sample.g_time }}</td>
+                                <td>{{ sample.name }}</td>
+                                <td>{{ sample.tool }}</td>
+                                <td>{{ sample.sum }}</td>
+                                <td>{{ sample.now_sum }}</td>
+                                <td>{{ sample.yiguishu }}</td>
+                                <td>{{ sample.weiguishu }}</td>
+                                <td>{{ sample.count }}</td>
+                                <td>{{ sample.count }}</td>
+                            </tr>
+                        {% endfor %}
                         </tbody>
                     </table>
                     <!-- 分页 -->

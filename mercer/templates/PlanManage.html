@@ -108,6 +108,9 @@
                             剩余总量
                         </th>
                         <th>
+                            期权总量
+                        </th>
+                        <th>
                             实际已授予期权
                         </th>
                         <th>
@@ -137,6 +140,16 @@
                             <td>{{ sample.start_date }}</td>
                             <td>{{ sample.validity_time }}</td>
                             <td>{{ sample.sum }}</td>
+                            <td>{{ sample.now_sum }}</td>
+                            <td>{{ sample.rest_sum }}</td>
+                            <td>1</td>
+                            <td>2</td>
+                            <td>3</td>
+                            <td>1</td>
+                            <td>2</td>
+                            <td>3</td>
+                            <td>{{ sample.count }}</td>
+                            <td>{{ sample.count }}</td>
                         </tr>
                     {% endfor %}
                     </tbody>

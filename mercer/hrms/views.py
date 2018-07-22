@@ -31,7 +31,7 @@ def StaffManage(request, page=1):  # 人员管理主页面
     username = request.user.username  # 获取当前登录的用户名
     department_list = Department.objects.filter(c_id=username)
     rank_list = Rank.objects.filter(c_id=username)
-    stafflist = Employee.objects.filter(c_number=username)
+    stafflist = Employee.objects.filter(c_number=username).order_by("id")
     per_page_count = 5  # 每页显示的个数
     endpage = stafflist.count() / per_page_count + 1
     paginator = Paginator(stafflist, per_page_count)  # 分页
@@ -131,7 +131,7 @@ def EditEAtt(request, eid, att_id):  # 编辑员工归属信息
 def PlanManage(request, page=1):  # 计划管理页面主页
     loginform = LoginForm()
     username = request.user.username  # 获取当前登录的用户名
-    planlist = Plan.objects.order_by('id').all()
+    planlist = Plan.objects.filter(c_name=username).order_by("id")
     per_page_count = 5  # 每页显示的个数
     endpage = planlist.count() / per_page_count + 1
     paginator = Paginator(planlist, per_page_count)  # 分页
@@ -146,10 +146,48 @@ def PlanManage(request, page=1):  # 计划管理页面主页
     return render(request, 'PlanManage.html', context=c)
 
 
+def AddPlan(request):
+    username = request.user.username  # 获取当前登录的用户名
+    stafflist = Employee.objects.filter(c_number=username).order_by("id")
+    c = csrf(request)
+    c.update({'staffs': stafflist})
+    return render(request, 'AddPlan.html', context=c)
+
+
+
+def AddPlanAdd(request):  # 添加员工
+    username = request.user.username  # 获取当前登录的用户名
+    request.encoding = 'utf-8'
+    if request.method == 'POST':
+        pindex = request.POST
+        plan_name = pindex.get('plan_name')
+        staff_count = pindex.get('staff_count')
+        g_time = pindex.get('g_time')
+        tool = pindex.get('tool')
+        validity_time = pindex.get('validity_time')
+        date = pindex.getlist('date')
+        proportion = pindex.getlist('proportion')
+        att_fangshi = pindex.get('att_fangshi')
+        staff_index = pindex.getlist('staff_index')
+        sum = pindex.get('sum')
+        all_sum = int(sum)*int(staff_count)
+        for one_e in staff_index:
+            hehe = one_e.split(':', 1)
+            e_id = hehe[0]
+            e_name = hehe[1]
+            for (one_date, one_pro) in zip(date,proportion):
+                Attribution.objects.create(plan_name=plan_name,c_id=username,e_id=e_id,
+                                           e_name=e_name, date=one_date,sum = sum,proportion = one_pro,
+                                           att_fangshi= att_fangshi)
+        Plan.objects.create(c_name=username,name=plan_name,validity_time=validity_time,count=staff_count,
+                            g_time=g_time,tool=tool,onesum=sum,sum=str(all_sum))
+    return redirect('/hrms/planlist')
+
+
 def PlanList(request, page=1):  # 授予记录页面
     loginform = LoginForm()
     username = request.user.username  # 获取当前登录的用户名
-    planlist = Plan.objects.order_by('id').all()
+    planlist = Plan.objects.filter(c_name=username).order_by("id")
     per_page_count = 5  # 每页显示的个数
     endpage = planlist.count() / per_page_count + 1
     paginator = Paginator(planlist, per_page_count)  # 分页
@@ -167,18 +205,18 @@ def PlanList(request, page=1):  # 授予记录页面
 def AttributionList(request, page=1):
     loginform = LoginForm()
     username = request.user.username  # 获取当前登录的用户名
-    planlist = Plan.objects.order_by('id').all()
+    attlist = Attribution.objects.filter(c_id=username, is_allot=True).order_by("id")
     per_page_count = 5  # 每页显示的个数
-    endpage = planlist.count() / per_page_count + 1
-    paginator = Paginator(planlist, per_page_count)  # 分页
+    endpage = attlist.count() / per_page_count + 1
+    paginator = Paginator(attlist, per_page_count)  # 分页
     try:
-        planlist = paginator.page(int(page))
+        attlist = paginator.page(int(page))
     except PageNotAnInteger:
-        planlist = paginator.page(1)
+        attlist = paginator.page(1)
     except EmptyPage:
-        planlist = paginator.page(paginator.num_pages)
+        attlist = paginator.page(paginator.num_pages)
     c = csrf(request)
-    c.update({'planlist': planlist, 'loginform': loginform, 'endpage': endpage, })
+    c.update({'attlist': attlist, 'loginform': loginform, 'endpage': endpage, })
     return render(request, 'AttributionList.html', context=c)
 
 
@@ -239,10 +277,6 @@ def DeleteRank(request):
         for sample in rank2del:
             Rank.objects.filter(name=sample).delete()  # 删除员工信息
     return redirect('/hrms/company')
-
-
-def AddPlan(request):
-    return render(request, 'AddPlan.html')
 
 
 def log_in(request):

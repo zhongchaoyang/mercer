@@ -20,7 +20,8 @@ urlpatterns = [
 
     url(r'^plan/$', views.PlanManage, name='plan'),
     url(r'^plan/page/(\d+)/$', views.PlanManage),
-    url(r'^addplan/$', views.AddPlan, name='addplan'),
+    url(r'^addplan/$', views.AddPlan, name='addplan'),#添加计划页面
+    url(r'^addplan/add$', views.AddPlanAdd, name='addplanadd'),#添加计划post请求
 
     url(r'^planlist/$', views.PlanList, name='planlist'),
     url(r'^planlist/page/(\d+)/$', views.PlanList),

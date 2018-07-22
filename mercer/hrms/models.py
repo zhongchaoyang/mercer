@@ -65,6 +65,7 @@ class Plan(models.Model):
     yiguishu = models.FloatField("yiguishu",default=0.0)#已归属量
     weiguishu = models.FloatField("weiguishu",default=0.0)#已归属量
     now_sum = models.FloatField('now_sum', default=0.0)  # 实际授予总量
+    rest_sum = models.FloatField('rest_sum', default=0.0)  # 剩余总量
     def __str__(self):
         return self.name.encode('utf-8')
 
@@ -73,9 +74,11 @@ class Attribution(models.Model):
     plan_name = models.CharField('plan_name', default='', max_length=256)  # 计划名称
     c_id = models.CharField('c_id', default='', max_length=256)  # 对应企业
     e_id = models.CharField('e_id',default='',max_length=256)#对应员工
+    e_name = models.CharField('name', default='', max_length=256)  # 员工姓名
     date = models.CharField('date', default='', max_length=256)#开始日期
     sum = models.FloatField("sum",default=0.0)#已归属量
     proportion = models.FloatField('proportion',default=0.0)#分配系数
+    att_fangshi = models.CharField('att_fangshi', default='', max_length=256)#归属方式
     is_allot = models.BooleanField('is_allot',default=False) #是否已经归属
 
     def __str__(self):

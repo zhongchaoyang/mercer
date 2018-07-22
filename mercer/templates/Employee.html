@@ -137,13 +137,16 @@
         </div>
         <div class="panel panel-default" style="margin-top: 20px">
             <div class="panel-heading">
-                <h4>归属信息</h4>
+                <h4>计划信息</h4>
             </div>
             <div class="panel-body">
                 <div class="panel-body" style="display: table;margin-left: auto;margin-right: auto">
                     <table class="sortable-theme-bootstrap" data-sortable>
                         <thead>
                         <tr>
+                            <th data-sortable="false">
+                                计划名称
+                            </th>
                             <th data-sortable="false">
                                 授予日期
                             </th>
@@ -170,8 +173,9 @@
                         <tbody>
                         {% for sample in planist %}
                             <tr>
-                                <td>{{ sample.g_time }}</td>
                                 <td>{{ sample.name }}</td>
+                                <td>{{ sample.g_time }}</td>
+                                <td>{{ sample.tool }}</td>
                                 <td>{{ sample.sum }}</td>
                                 <td>{{ sample.now_sum }}</td>
                                 <td>{{ sample.yiguishu }}</td>
@@ -419,10 +423,10 @@
                                                             <label for="department"
                                                                    class="col-sm-2 control-label">部门</label>
                                                             <div class="col-sm-7">
+
                                                                 <select class="selectpicker" title="请选择部门"
                                                                         id="department"
-                                                                        name="department"
-                                                                        value="{{ employee.department }}">
+                                                                        name="department">
                                                                     {% for sample in department_list %}
                                                                         <option>{{ sample.name }}</option>
                                                                     {% endfor %}
@@ -433,7 +437,7 @@
                                                             <label for="rank" class="col-sm-2 control-label">职级</label>
                                                             <div class="col-sm-7">
                                                                 <select class="selectpicker" title="请选择职级" id="rank"
-                                                                        name="rank" value="{{ employee.rank }}">
+                                                                        name="rank" defaultValue="{{ employee.rank }}">
                                                                     {% for sample in rank_list %}
                                                                         <option>{{ sample.name }}</option>
                                                                     {% endfor %}
@@ -443,39 +447,17 @@
                                                         <div class="form-group">
                                                             <label for="join_date"
                                                                    class="col-sm-2 control-label">入职时间</label>
-                                                            <div class="col-sm-7">
-                                                                <div class="input-group date form_datetime col-sm-7"
-                                                                     data-date-format="yyyy-MM-dd"
-                                                                     data-link-field="dtp_input1">
-                                                                    <input class="form-control" size="16"
-                                                                           placeholder="请选择入职时间"
-                                                                           type="text" value="" id="join_date"
-                                                                           name="join_date"
-                                                                           value="{{ employee.join_date }}"
-                                                                           readonly>
-
-                                                                    <span class="input-group-addon"><span
-                                                                            class="glyphicon glyphicon-th"></span></span>
-                                                                </div>
+                                                            <div class="col-sm-5">
+                                                                <input size="16" type="date" class="form-control" value="{{ employee.join_date }}"
+                                                                id="join_date" name="join_date">
                                                             </div>
                                                         </div>
                                                         <div class="form-group">
                                                             <label for="leave_date"
                                                                    class="col-sm-2 control-label">离职时间</label>
-                                                            <div class="col-sm-7">
-                                                                <div class="input-group date form_datetime col-sm-7"
-                                                                     data-date-format="yyyy-MM-dd"
-                                                                     data-link-field="dtp_input1">
-                                                                    <input class="form-control" size="16"
-                                                                           placeholder="请选择离职时间"
-                                                                           type="text" value="" id="leave_date"
-                                                                           name="leave_date"
-                                                                           value="{{ employee.leave_date }}"
-                                                                           readonly>
-
-                                                                    <span class="input-group-addon"><span
-                                                                            class="glyphicon glyphicon-th"></span></span>
-                                                                </div>
+                                                            <div class="col-sm-5">
+                                                                <input size="16" type="date" class="form-control" value="{{ employee.leave_date }}"
+                                                                id="leave_date" name="leave_date">
                                                             </div>
                                                         </div>
                                                     </form>
@@ -519,21 +501,6 @@
 <script type="text/javascript"
         src="{% static "bootstrap-datetimepicker-master/js/locales/bootstrap-datetimepicker.zh-CN.js" %}"
         charset="UTF-8"></script>
-<script type="text/javascript">
-    $(".form_datetime").datetimepicker({
-        format: 'yyyy-mm-dd',
-        autoclose: true,
-        todayBtn: true,
-        pickerPosition: "bottom-left",
-        language: 'zh-CN',
-        pickDate: true,
-        pickTime: false,
-        minView: 'month',
-        todayHighlight: true
-    });
-
-</script>
-
 <!-- IE10 viewport bug workaround -->
 <script src="{% static "js/ie10-viewport-bug-workaround.js" %}"></script>
 <!-- Placeholder Images -->
