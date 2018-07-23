@@ -110,29 +110,30 @@
                                 姓名
                             </th>
                             <th data-sortable="false">
-                                部门
+                                计划名称
                             </th>
                             <th data-sortable="false">
-                                职级
+                                归属日期
                             </th>
                             <th>
-                                入职时间
+                                归属量
                             </th>
                             <th>
-                                已授予
-                            </th>
-                            <th>
-                                已归属
-                            </th>
-                            <th>
-                                未归属
-                            </th>
-                            <th data-sortable="false">
-                                离职时间
+                                分配系数
                             </th>
                         </tr>
                         </thead>
                         <tbody>
+                        {% for sample in attlist %}
+                            <tr>
+                                <td>{{ sample.e_id }}</td>
+                                <td>{{ sample.e_name }}</td>
+                                <td>{{ sample.plan_name }}</td>
+                                <td>{{ sample.date }}</td>
+                                <td>{{ sample.sum }}</td>
+                                <td>{{ sample.proportion }}</td>
+                            </tr>
+                        {% endfor %}
                         </tbody>
                     </table>
                     <!-- 分页 -->

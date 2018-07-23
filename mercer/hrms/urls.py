@@ -15,11 +15,13 @@ urlpatterns = [
     url(r'^staff/dele$', views.DeleteEmployee, name='dele'),  # 删除员工
     url(r'^staff/employee/(?P<eid>(.*?))/$', views.EmployeeIndex, name='eIndex'),#查询具体员工信息
     url(r'^staff/edit/(?P<eid>(.*?))/$', views.EditEmployee, name='editE'),  # 编辑员工信息
+    url(r'^staff/edit_att/(?P<eid>(.*?))-(?P<att_id>(.*?))/$', views.EditEAtt, name='editA'),  # 编辑员工归属信息
     url(r'^staff/page/(\d+)/$', views.StaffManage),
 
     url(r'^plan/$', views.PlanManage, name='plan'),
     url(r'^plan/page/(\d+)/$', views.PlanManage),
-    url(r'^addplan/$', views.AddPlan, name='addplan'),
+    url(r'^addplan/$', views.AddPlan, name='addplan'),#添加计划页面
+    url(r'^addplan/add$', views.AddPlanAdd, name='addplanadd'),#添加计划post请求
 
     url(r'^planlist/$', views.PlanList, name='planlist'),
     url(r'^planlist/page/(\d+)/$', views.PlanList),

@@ -92,14 +92,17 @@
             <div class="panel-body">
                 <div class="row">
                     <div>
-                        <label class="col-sm-6">企业名称 : {{ company.c_name }}</label>
-                        <label class="col-sm-6">企业地址 : {{ company.c_address }}</label>
+                        <label class="col-sm-3">企业名称 : </label>
+                        <label class="col-sm-3" style="color: #2b81af">{{ company.c_name }}</label>
+                        <label class="col-sm-3">企业地址 : </label>
+                        <label class="col-sm-3" style="color: #2b81af">{{ company.c_address }}</label>
                     </div>
                     <div>
-                        <label class="col-sm-2">部门 : </label>
+                        <label class="col-sm-1">部门 : </label>
                         <div class="col-sm-6">
+                             <label style="color: #2b81af">-</label>
                             {% for sample in departments %}
-                                <label>{{ sample.name }}</label>
+                                <label style="color: #2b81af">{{ sample.name }}</label>
                             {% endfor %}
                         </div>
                         <button class="btn btn-default col-sm-6" data-toggle="modal" data-target="#myModal3">添加部门</button>
@@ -209,10 +212,11 @@
                         </form>
                     </div>
                     <div>
-                        <label class="col-sm-2">职级 : </label>
+                        <label class="col-sm-1">职级 : {{ employee.department }}</label>
                         <div class="col-sm-6">
+                            <label style="color: #2b81af">-</label>
                             {% for sample in ranks %}
-                                <label>{{ sample.name }}</label>
+                                <label style="color: #2b81af">{{ sample.name }}</label>
                             {% endfor %}
                         </div>
                         <button class="btn btn-default col-sm-6" data-toggle="modal" data-target="#myModal5">添加职级</button>
@@ -383,7 +387,7 @@
                         </button>
                     </div>
                     <div>
-                        <button class="btn btn-default" data-toggle="modal" style="display: table;margin-left: auto;margin-right: auto;margin-top: 40px" data-target="#myModal2">修改企业信息</button>
+                        <button class="btn btn-default" data-toggle="modal" style="display: table;margin-left: auto;margin-right: auto;margin-top: 60px" data-target="#myModal2">修改企业信息</button>
                         <form method="post" action="/hrms/company/editcompany" class="form-horizontal" role="form"
                               id="myForm"
                               onsubmit="return ">{% csrf_token %}
