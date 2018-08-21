@@ -98,172 +98,6 @@
                     <button type="submit" class="btn btn-default">搜索</button>
                 </form>
             </div>
-            <div class="col-md-2">
-                <button class="btn btn-default" data-toggle="modal" data-target="#myModal1">添加员工</button>
-                <form method="post" action="/hrms/staff/adde" class="form-horizontal" role="form" id="myForm"
-                      onsubmit="return ">{% csrf_token %}
-                    <div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-                         aria-hidden="true">
-                        <!--  定义模态框，过渡效果为淡入，id为myModal,tabindex=-1可以禁用使用tab切换，aria-labelledby用于引用模态框的标题，aria-hidden=true保持模态框在触发前窗口不可见  -->
-                        <div class="modal-dialog">
-                            <!--  显示模态框对话框模型（若不写下一个div则没有颜色）  -->
-                            <div class="modal-content">
-                                <!--  显示模态框白色背景，所有内容都写在这个div里面  -->
-
-                                <div class="modal-body">
-                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                    <!--  模态框内容，我在此处添加一个表单 -->
-                                    <div class="row">
-                                        <div>
-                                            <h4 style="text-align: center">请输入员工信息</h4>
-                                        </div>
-                                        <div>
-                                            <form class="form-horizontal" role="form">
-                                                <div class="form-group">
-                                                    <label for="enumber" class="col-sm-2 control-label">员工编号</label>
-                                                    <div class="col-sm-7">
-                                                        <input type="text" id="enumber" name="enumber"
-                                                               class="form-control well"
-                                                               placeholder="请输入员工编号"/>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="ename" class="col-sm-2 control-label">员工姓名</label>
-                                                    <div class="col-sm-7">
-                                                        <input type="text" id="ename" name="ename"
-                                                               class="form-control well"
-                                                               placeholder="请输入员工姓名"/>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="department" class="col-sm-2 control-label">部门</label>
-                                                    <div class="col-sm-7">
-                                                        <select class="selectpicker" title="请选择部门" id="department"
-                                                                name="department">
-                                                            {% for sample in department_list %}
-                                                                <option>{{ sample.name }}</option>
-                                                            {% endfor %}
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="rank" class="col-sm-2 control-label">职级</label>
-                                                    <div class="col-sm-7">
-                                                        <select class="selectpicker" title="请选择职级" id="rank"
-                                                                name="rank">
-                                                            {% for sample in rank_list %}
-                                                                <option>{{ sample.name }}</option>
-                                                            {% endfor %}
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="join_date" class="col-sm-2 control-label">入职时间</label>
-                                                    <div class="col-sm-7">
-                                                        <div class="input-group date form_datetime col-sm-7"
-                                                             data-date="2018-07-10"
-                                                             data-date-format="yyyy-MM-dd"
-                                                             data-link-field="dtp_input1">
-                                                            <input class="form-control" size="16" placeholder="请选择入职时间"
-                                                                   type="text" value="" id="join_date" name="join_date"
-                                                                   readonly>
-
-                                                            <span class="input-group-addon"><span
-                                                                    class="glyphicon glyphicon-th"></span></span>
-                                                        </div>
-
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="leave_date"
-                                                           class="col-sm-2 control-label">离职时间</label>
-                                                    <div class="col-sm-7">
-                                                        <div class="input-group date form_datetime col-sm-7"
-                                                             data-date-format="yyyy-MM-dd"
-                                                             data-link-field="dtp_input1">
-                                                            <input class="form-control" size="16"
-                                                                   placeholder="请选择离职时间"
-                                                                   type="text" value="" id="leave_date"
-                                                                   name="leave_date" value="{{ employee.leave_date }}"
-                                                                   readonly>
-
-                                                            <span class="input-group-addon"><span
-                                                                    class="glyphicon glyphicon-th"></span></span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-
-                                </div>
-
-                                <div class="modal-footer">
-                                    <!--  模态框底部样式，一般是提交或者确定按钮 -->
-                                    <button type="submit" class="btn btn-default">确定</button>
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                                </div>
-
-                            </div><!-- /.modal-content -->
-                        </div>
-                    </div> <!-- /.modal -->
-                </form>
-                <button class="btn btn-default" style="margin-top: 5px" data-toggle="modal" data-target="#myModal2">
-                    删除员工
-                </button>
-                <form method="post" action="/hrms/staff/dele" class="form-horizontal" role="form" id="myForm"
-                      onsubmit="return ">{% csrf_token %}
-                    <div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-                         aria-hidden="true">
-                        <!--  定义模态框，过渡效果为淡入，id为myModal,tabindex=-1可以禁用使用tab切换，aria-labelledby用于引用模态框的标题，aria-hidden=true保持模态框在触发前窗口不可见  -->
-                        <div class="modal-dialog">
-                            <!--  显示模态框对话框模型（若不写下一个div则没有颜色）  -->
-                            <div class="modal-content">
-                                <!--  显示模态框白色背景，所有内容都写在这个div里面  -->
-
-                                <div class="modal-body">
-                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                    <!--  模态框内容，我在此处添加一个表单 -->
-                                    <div class="row">
-                                        <div>
-                                            <h4 style="text-align: center">删除员工</h4>
-                                        </div>
-                                        <div>
-                                            <form class="form-horizontal" role="form">
-                                                <div class="form-group">
-                                                    <label class="col-sm-4 control-label">请选择要删除的员工</label>
-                                                    <div class="col-sm-5">
-                                                        <select class="selectpicker" data-size="20" multiple
-                                                                data-live-search="true" id="staff2del" name="staff2del"
-                                                                data-live-search-placeholder="搜索"
-                                                                data-actions-box="true"
-                                                                data-selected-text-format="count > 3">　
-                                                            <optgroup label="filter1">　　　　
-                                                                {% for sample in staffs %}
-                                                                    <option>{{ sample.number }}:{{ sample.name }}</option>
-                                                                {% endfor %}　　
-                                                            </optgroup>
-                                                            　
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-
-                                </div>
-
-                                <div class="modal-footer">
-                                    <!--  模态框底部样式，一般是提交或者确定按钮 -->
-                                    <button type="submit" class="btn btn-default">确定</button>
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                                </div>
-
-                            </div><!-- /.modal-content -->
-                        </div>
-                    </div> <!-- /.modal -->
-                </form>
-            </div>
 
             <div class="panel panel-default" style="margin-top: 80px">
                 <div class="panel-body" style="display: table;margin-left: auto;margin-right: auto">
@@ -309,9 +143,9 @@
                                 <td>{{ sample.department }}</td>
                                 <td>{{ sample.rank }}</td>
                                 <td>{{ sample.join_date }}</td>
-                                <td>{{ yishouyu }}</td>
-                                <td>{{ yiguishu }}</td>
-                                <td>{{ weiguishu }}</td>
+                                <td>{{ sample.yishouyu }}</td>
+                                <td>{{ sample.yiguishu }}</td>
+                                <td>{{ sample.weiguishu }}</td>
                                 <td>{{ sample.leave_date }}</td>
                             </tr>
                         {% endfor %}
@@ -400,19 +234,187 @@
             <div class="panel-body">
                 <div class="row">
                     <div>
-                        <button class="btn btn-default" style="display: table;margin-left: auto;margin-right: auto">
-                            计划信息
-                        </button>
+                        <button class="btn btn-default" style="display: table;margin-left: auto;margin-right: auto" data-toggle="modal" data-target="#myModal1">添加员工</button>
+                        <form method="post" action="/hrms/staff/adde" class="form-horizontal" role="form" id="myForm"
+                              onsubmit="return ">{% csrf_token %}
+                            <div class="modal fade" id="myModal1" tabindex="-1" role="dialog"
+                                 aria-labelledby="myModalLabel"
+                                 aria-hidden="true">
+                                <!--  定义模态框，过渡效果为淡入，id为myModal,tabindex=-1可以禁用使用tab切换，aria-labelledby用于引用模态框的标题，aria-hidden=true保持模态框在触发前窗口不可见  -->
+                                <div class="modal-dialog">
+                                    <!--  显示模态框对话框模型（若不写下一个div则没有颜色）  -->
+                                    <div class="modal-content">
+                                        <!--  显示模态框白色背景，所有内容都写在这个div里面  -->
+
+                                        <div class="modal-body">
+                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                            <!--  模态框内容，我在此处添加一个表单 -->
+                                            <div class="row">
+                                                <div>
+                                                    <h4 style="text-align: center">请输入员工信息</h4>
+                                                </div>
+                                                <div>
+                                                    <form class="form-horizontal" role="form">
+                                                        <div class="form-group">
+                                                            <label for="enumber"
+                                                                   class="col-sm-2 control-label">员工编号</label>
+                                                            <div class="col-sm-7">
+                                                                <input type="text" id="enumber" name="enumber"
+                                                                       class="form-control well"
+                                                                       placeholder="请输入员工编号"/>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="ename"
+                                                                   class="col-sm-2 control-label">员工姓名</label>
+                                                            <div class="col-sm-7">
+                                                                <input type="text" id="ename" name="ename"
+                                                                       class="form-control well"
+                                                                       placeholder="请输入员工姓名"/>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="department"
+                                                                   class="col-sm-2 control-label">部门</label>
+                                                            <div class="col-sm-7">
+                                                                <select class="selectpicker" title="请选择部门"
+                                                                        id="department"
+                                                                        name="department">
+                                                                    {% for sample in department_list %}
+                                                                        <option>{{ sample.name }}</option>
+                                                                    {% endfor %}
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="rank" class="col-sm-2 control-label">职级</label>
+                                                            <div class="col-sm-7">
+                                                                <select class="selectpicker" title="请选择职级" id="rank"
+                                                                        name="rank">
+                                                                    {% for sample in rank_list %}
+                                                                        <option>{{ sample.name }}</option>
+                                                                    {% endfor %}
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="join_date"
+                                                                   class="col-sm-2 control-label">入职时间</label>
+                                                            <div class="col-sm-7">
+                                                                <div class="input-group date form_datetime col-sm-7"
+                                                                     data-date="2018-07-10"
+                                                                     data-date-format="yyyy-MM-dd"
+                                                                     data-link-field="dtp_input1">
+                                                                    <input class="form-control" size="16"
+                                                                           placeholder="请选择入职时间"
+                                                                           type="text" value="" id="join_date"
+                                                                           name="join_date"
+                                                                           readonly>
+
+                                                                    <span class="input-group-addon"><span
+                                                                            class="glyphicon glyphicon-th"></span></span>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="leave_date"
+                                                                   class="col-sm-2 control-label">离职时间</label>
+                                                            <div class="col-sm-7">
+                                                                <div class="input-group date form_datetime col-sm-7"
+                                                                     data-date-format="yyyy-MM-dd"
+                                                                     data-link-field="dtp_input1">
+                                                                    <input class="form-control" size="16"
+                                                                           placeholder="请选择离职时间"
+                                                                           type="text" value="" id="leave_date"
+                                                                           name="leave_date"
+                                                                           value="{{ employee.leave_date }}"
+                                                                           readonly>
+
+                                                                    <span class="input-group-addon"><span
+                                                                            class="glyphicon glyphicon-th"></span></span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="modal-footer">
+                                            <!--  模态框底部样式，一般是提交或者确定按钮 -->
+                                            <button type="submit" class="btn btn-default">确定</button>
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">取消
+                                            </button>
+                                        </div>
+
+                                    </div><!-- /.modal-content -->
+                                </div>
+                            </div> <!-- /.modal -->
+                        </form>
+
                     </div>
                     <div>
-                        <button class="btn btn-default"
-                                style="display: table;margin-left: auto;margin-right: auto;margin-top: 40px">授予记录
+                        <button class="btn btn-default" style="display: table;margin-left: auto;margin-right: auto;margin-top: 40px" data-toggle="modal"
+                                data-target="#myModal2">
+                            删除员工
                         </button>
-                    </div>
-                    <div>
-                        <button class="btn btn-default"
-                                style="display: table;margin-left: auto;margin-right: auto;margin-top: 40px">归属记录
-                        </button>
+                        <form method="post" action="/hrms/staff/dele" class="form-horizontal" role="form" id="myForm"
+                              onsubmit="return ">{% csrf_token %}
+                            <div class="modal fade" id="myModal2" tabindex="-1" role="dialog"
+                                 aria-labelledby="myModalLabel"
+                                 aria-hidden="true">
+                                <!--  定义模态框，过渡效果为淡入，id为myModal,tabindex=-1可以禁用使用tab切换，aria-labelledby用于引用模态框的标题，aria-hidden=true保持模态框在触发前窗口不可见  -->
+                                <div class="modal-dialog">
+                                    <!--  显示模态框对话框模型（若不写下一个div则没有颜色）  -->
+                                    <div class="modal-content">
+                                        <!--  显示模态框白色背景，所有内容都写在这个div里面  -->
+
+                                        <div class="modal-body">
+                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                            <!--  模态框内容，我在此处添加一个表单 -->
+                                            <div class="row">
+                                                <div>
+                                                    <h4 style="text-align: center">删除员工</h4>
+                                                </div>
+                                                <div>
+                                                    <form class="form-horizontal" role="form">
+                                                        <div class="form-group">
+                                                            <label class="col-sm-4 control-label">请选择要删除的员工</label>
+                                                            <div class="col-sm-5">
+                                                                <select class="selectpicker" data-size="20" multiple
+                                                                        data-live-search="true" id="staff2del"
+                                                                        name="staff2del"
+                                                                        data-live-search-placeholder="搜索"
+                                                                        data-actions-box="true"
+                                                                        data-selected-text-format="count > 3">　
+                                                                    <optgroup label="filter1">　　　　
+                                                                        {% for sample in staffs %}
+                                                                            <option>{{ sample.number }}:{{ sample.name }}</option>
+                                                                        {% endfor %}　　
+                                                                    </optgroup>
+                                                                    　
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="modal-footer">
+                                            <!--  模态框底部样式，一般是提交或者确定按钮 -->
+                                            <button type="submit" class="btn btn-default">确定</button>
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">取消
+                                            </button>
+                                        </div>
+
+                                    </div><!-- /.modal-content -->
+                                </div>
+                            </div> <!-- /.modal -->
+                        </form>
                     </div>
                 </div>
             </div>

@@ -96,9 +96,6 @@
                     <button type="submit" class="btn btn-default">搜索</button>
                 </form>
             </div>
-            <div class="col-md-2">
-                <a class="btn btn-default" style="margin-top: 10px" href={% url "addplan" %}>添加计划</a>
-            </div>
 
             <div class="panel panel-default" style="margin-top: 80px">
                 <div class="panel-body" style="display: table;margin-left: auto;margin-right: auto">
@@ -106,10 +103,16 @@
                         <thead>
                         <tr>
                             <th>
+                                授予名称
+                            </th>
+                            <th>
+                                序号
+                            </th>
+                            <th>
                                 授予日期
                             </th>
                             <th data-sortable="false">
-                                计划名称
+                                对应计划
                             </th>
                             <th data-sortable="false">
                                 激励工具
@@ -129,22 +132,20 @@
                             <th>
                                 授予人数
                             </th>
-                            <th data-sortable="false">
-                                实际授予人数
-                            </th>
                         </tr>
                         </thead>
                         <tbody>
-                        {% for sample in planlist %}
+                        {% for sample in grantlist %}
                             <tr>
+                                <td>{{ sample.grant_name }}</td>
+                                <td>{{ forloop.counter }}</td>
                                 <td>{{ sample.g_time }}</td>
                                 <td>{{ sample.name }}</td>
                                 <td>{{ sample.tool }}</td>
                                 <td>{{ sample.sum }}</td>
-                                <td>{{ sample.now_sum }}</td>
+                                <td>{{ sample.real_sum }}</td>
                                 <td>{{ sample.yiguishu }}</td>
                                 <td>{{ sample.weiguishu }}</td>
-                                <td>{{ sample.count }}</td>
                                 <td>{{ sample.count }}</td>
                             </tr>
                         {% endfor %}
@@ -154,17 +155,17 @@
                     <div style="padding-right:10px">
                             <span style="float: right">
                                  <a href="/hrms/planlist/page/1"> 第一页 |  &nbsp;</a>
-                                {% if planlist.has_previous %}
-                                    <a href="/hrms/planlist/page/{{ planlist.previous_page_number }}"> 上一页 &nbsp;</a>
+                                {% if grantlist.has_previous %}
+                                    <a href="/hrms/planlist/page/{{ grantlist.previous_page_number }}"> 上一页 &nbsp;</a>
                                 {% else %}
                                     {# 当前页的不存在上一页时,上一页的按钮不可用#}
                                     <a href="#"> 上一页 &nbsp;</a>
-                                    {% if  planlist.has_next %}
+                                    {% if  grantlist.has_next %}
                                         <span> | </span>
                                     {% endif %}
                                 {% endif %}
-                                {% if planlist.has_next %}
-                                    <a href="/hrms/planlist/page/{{ planlist.next_page_number }}"> 下一页 &nbsp;</a>
+                                {% if grantlist.has_next %}
+                                    <a href="/hrms/planlist/page/{{ grantlist.next_page_number }}"> 下一页 &nbsp;</a>
                                 {% else %}
                                     <a href="#"> 下一页 &nbsp;</a>
                                 {% endif %}
@@ -229,19 +230,7 @@
             <div class="panel-body">
                 <div class="row">
                     <div>
-                        <button class="btn btn-default" style="display: table;margin-left: auto;margin-right: auto">
-                            计划信息
-                        </button>
-                    </div>
-                    <div>
-                        <button class="btn btn-default"
-                                style="display: table;margin-left: auto;margin-right: auto;margin-top: 40px">授予记录
-                        </button>
-                    </div>
-                    <div>
-                        <button class="btn btn-default"
-                                style="display: table;margin-left: auto;margin-right: auto;margin-top: 40px">归属记录
-                        </button>
+                         <a class="btn btn-default" style="display: table;margin-left: auto;margin-right: auto" href={% url "addplan" %}>新增授予</a>
                     </div>
                 </div>
             </div>

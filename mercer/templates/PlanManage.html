@@ -90,6 +90,10 @@
                     <thead>
                     <tr>
                         <th>
+                            序号
+                        </th>
+
+                        <th>
                             计划名称
                         </th>
                         <th data-sortable="false">
@@ -102,7 +106,7 @@
                             最大授予总量
                         </th>
                         <th>
-                            实际已授予总量
+                            已授予总量
                         </th>
                         <th>
                             剩余总量
@@ -111,7 +115,7 @@
                             期权总量
                         </th>
                         <th>
-                            实际已授予期权
+                            已授予期权
                         </th>
                         <th>
                             剩余期权
@@ -120,7 +124,7 @@
                             RSU总量
                         </th>
                         <th>
-                            实际已授予RSU
+                            已授予RSU
                         </th>
                         <th>
                             剩余RSU
@@ -136,20 +140,21 @@
                     <tbody>
                     {% for sample in planlist %}
                         <tr>
+                        <td>{{ forloop.counter }}</td>
                             <td>{{ sample.name }}</td>
                             <td>{{ sample.start_date }}</td>
                             <td>{{ sample.validity_time }}</td>
                             <td>{{ sample.sum }}</td>
-                            <td>{{ sample.now_sum }}</td>
+                            <td>{{ sample.real_sum }}</td>
                             <td>{{ sample.rest_sum }}</td>
-                            <td>1</td>
-                            <td>2</td>
-                            <td>3</td>
-                            <td>1</td>
-                            <td>2</td>
-                            <td>3</td>
+                            <td>{{ sample.qq_sum }}</td>
+                            <td>{{ sample.real_qq_sum }}</td>
+                            <td>{{ sample.rest_qq_sum }}</td>
+                            <td>{{ sample.rsu_sum }}</td>
+                            <td>{{ sample.real_rsu_sum }}</td>
+                            <td>{{ sample.rest_rsu_sum }}</td>
                             <td>{{ sample.count }}</td>
-                            <td>{{ sample.count }}</td>
+                            <td>{{ sample.count_renci }}</td>
                         </tr>
                     {% endfor %}
                     </tbody>
@@ -233,19 +238,100 @@
             <div class="panel-body">
                 <div class="row">
                     <div>
-                        <button class="btn btn-default" style="display: table;margin-left: auto;margin-right: auto">
-                            计划信息
+                        <button class="btn btn-default" style="display: table;margin-left: auto;margin-right: auto"
+                                data-toggle="modal" data-target="#myModal1">添加计划
                         </button>
-                    </div>
-                    <div>
-                        <button class="btn btn-default"
-                                style="display: table;margin-left: auto;margin-right: auto;margin-top: 40px">授予记录
-                        </button>
-                    </div>
-                    <div>
-                        <button class="btn btn-default"
-                                style="display: table;margin-left: auto;margin-right: auto;margin-top: 40px">归属记录
-                        </button>
+                        <form method="post" action="/hrms/plan/add" class="form-horizontal" role="form" id="myForm"
+                              onsubmit="return ">{% csrf_token %}
+                            <div class="modal fade" id="myModal1" tabindex="-1" role="dialog"
+                                 aria-labelledby="myModalLabel"
+                                 aria-hidden="true">
+                                <!--  定义模态框，过渡效果为淡入，id为myModal,tabindex=-1可以禁用使用tab切换，aria-labelledby用于引用模态框的标题，aria-hidden=true保持模态框在触发前窗口不可见  -->
+                                <div class="modal-dialog">
+                                    <!--  显示模态框对话框模型（若不写下一个div则没有颜色）  -->
+                                    <div class="modal-content">
+                                        <!--  显示模态框白色背景，所有内容都写在这个div里面  -->
+
+                                        <div class="modal-body">
+                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                            <!--  模态框内容，我在此处添加一个表单 -->
+                                            <div class="row">
+                                                <div>
+                                                    <h4 style="text-align: center">添加计划</h4>
+                                                </div>
+                                                <div>
+                                                    <form class="form-horizontal" role="form">
+                                                        <div class="form-group">
+                                                            <label for="ename"
+                                                                   class="col-sm-3 control-label">计划名称</label>
+                                                            <div class="col-sm-7">
+                                                                <input type="text" id="pname" name="pname"
+                                                                       class="form-control well"
+                                                                       placeholder="请输入计划名称"/>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="ename"
+                                                                   class="col-sm-3 control-label">期权总量</label>
+                                                            <div class="col-sm-7">
+                                                                <input type="number" id="qq_sum" name="qq_sum"
+                                                                       class="form-control well"
+                                                                       placeholder="请输入计划的总量"/>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="ename"
+                                                                   class="col-sm-3 control-label">RSU总量</label>
+                                                            <div class="col-sm-7">
+                                                                <input type="number" id="rsu_sum" name="rsu_sum"
+                                                                       class="form-control well"
+                                                                       placeholder="请输入计划的总量"/>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="ename"
+                                                                   class="col-sm-3 control-label">有效期</label>
+                                                            <div class="col-sm-7">
+                                                                <input type="number" id="validity_time" name="validity_time"
+                                                                       class="form-control well"
+                                                                       placeholder="请输入计划的有效期，单位:月"/>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="leave_date"
+                                                                   class="col-sm-3 control-label">开始实施时间</label>
+                                                            <div class="col-sm-7">
+                                                                <div class="input-group date form_datetime"
+                                                                     data-date-format="yyyy-MM-dd"
+                                                                     data-link-field="dtp_input1">
+                                                                    <input class="form-control" size="16"
+                                                                           placeholder="请选择开始实施时间"
+                                                                           type="text" value="" id="start_date"
+                                                                           name="start_date"
+                                                                           readonly>
+
+                                                                    <span class="input-group-addon"><span
+                                                                            class="glyphicon glyphicon-th"></span></span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="modal-footer">
+                                            <!--  模态框底部样式，一般是提交或者确定按钮 -->
+                                            <button type="submit" class="btn btn-default">确定</button>
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">取消
+                                            </button>
+                                        </div>
+
+                                    </div><!-- /.modal-content -->
+                                </div>
+                            </div> <!-- /.modal -->
+                        </form>
                     </div>
                 </div>
             </div>
