@@ -86,13 +86,13 @@
 
         <div class="row" style="margin: auto">
             <div class="col-md-10">
-                <form class="form-search" style="margin-top: 10px">
+                <form action="/hrms/staff/SearchPlan" method="get" class="form-search" style="margin-top: 10px">
                     <label class="control-label">授予年份</label>
-                    <input class="input-medium search-query" type="text"/>
+                    <input class="input-medium search-query" type="text" name="gyear" id="gyear"/>
                     <label class="control-label">计划名称</label>
-                    <input class="input-medium search-query" type="text"/>
+                    <input class="input-medium search-query" type="text" name="pname" id="pname"/>
                     <label class="control-label">授予工具</label>
-                    <input class="input-medium search-query" type="text"/>
+                    <input class="input-medium search-query" type="text" name="gtool" id="gtool"/>
                     <button type="submit" class="btn btn-default">搜索</button>
                 </form>
             </div>
@@ -136,6 +136,20 @@
                         </thead>
                         <tbody>
                         {% for sample in grantlist %}
+                            <tr>
+                                <td>{{ sample.grant_name }}</td>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ sample.g_time }}</td>
+                                <td>{{ sample.name }}</td>
+                                <td>{{ sample.tool }}</td>
+                                <td>{{ sample.sum }}</td>
+                                <td>{{ sample.real_sum }}</td>
+                                <td>{{ sample.yiguishu }}</td>
+                                <td>{{ sample.weiguishu }}</td>
+                                <td>{{ sample.count }}</td>
+                            </tr>
+                        {% endfor %}
+                        {% for sample in sgrantlist %}
                             <tr>
                                 <td>{{ sample.grant_name }}</td>
                                 <td>{{ forloop.counter }}</td>

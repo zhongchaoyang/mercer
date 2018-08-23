@@ -19,6 +19,10 @@ urlpatterns = [
     url(r'^staff/del_att/(?P<eid>(.*?))-(?P<att_id>(.*?))/$', views.DelEAtt, name='DelA'),  # 编辑员工归属信息
     url(r'^staff/page/(\d+)/$', views.StaffManage),
 
+    url(r'^staff/SearchEmployee$', views.SearchEmployee,name='SearchEmployee'),
+    url(r'^staff/SearchAttribution$', views.SearchAttribution,name='SearchAttribution'),
+    url(r'^staff/SearchPlan$', views.SearchPlan,name='SearchPlan'),
+
     url(r'^plan/$', views.PlanManage, name='plan'),
     url(r'^plan/page/(\d+)/$', views.PlanManage),
     url(r'^addplan/$', views.AddPlan, name='addplan'),#添加授予页面

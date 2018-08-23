@@ -12,6 +12,7 @@ from .forms import *
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import make_password
+from django.db.models import Q
 from .models import NewUser
 from django.core.exceptions import ObjectDoesNotExist
 from django.views.decorators.cache import cache_page
@@ -194,6 +195,41 @@ def EditEmployee(request, eid):  # 编辑员工信息
                                                    leave_date=leave_date)
     hehe = '/hrms/staff/employee/' + eid
     return redirect(hehe)
+
+def SearchEmployee(request):
+    if request.method == 'GET':
+        eindex = request.GET
+        ename = eindex.get('ename')
+        enumber = eindex.get('enumber')
+        edepartment = eindex.get('edepartment')
+        erank = eindex.get('erank')
+        employeelist = Employee.objects.filter(Q(name=ename)|Q(rank=erank)|Q(department=edepartment)|Q(number=enumber))
+    c = csrf(request)
+    c.update({'employeelist': employeelist})
+    return render(request, 'StaffManage.html', context=c)
+
+def SearchAttribution(request):
+    if request.method == 'GET':
+        eindex = request.GET
+        ename = eindex.get('ename')
+        enumber = eindex.get('enumber')
+        edepartment = eindex.get('edepartment')
+        erank = eindex.get('erank')
+        attributionlist = Attribution.objects.filter(Q(e_name=ename)|Q(e_id=enumber))
+    c = csrf(request)
+    c.update({'attributionlist': attributionlist})
+    return render(request, 'AttributionList.html', context=c)
+
+def SearchPlan(request):
+    if request.method == 'GET':
+        eindex = request.GET
+        gyear = eindex.get('gyear')
+        pname = eindex.get('pname')
+        gtool = eindex.get('gtool')
+        sgrantlist = Grant.objects.filter(Q(g_time=gyear)|Q(grant_name=pname)|Q(tool=gtool))
+    c = csrf(request)
+    c.update({'sgrantlist': sgrantlist})
+    return render(request, 'PlanList.html', context=c)
 
 
 def time_cmp(first_time, second_time):
